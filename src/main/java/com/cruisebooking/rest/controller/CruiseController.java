@@ -5,22 +5,24 @@ import com.cruisebooking.rest.service.CruiseServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/cruise")
 public class CruiseController {
+    @Autowired
+    CruiseServiceInterface cruiseServiceInterface;
     public CruiseController(CruiseServiceInterface cruiseServiceInterface) {
         this.cruiseServiceInterface = cruiseServiceInterface;
     }
 
-    @Autowired
-    CruiseServiceInterface cruiseServiceInterface;
-    @GetMapping()
-    public List<CruiseModel> getCruiseList(){
-        return cruiseServiceInterface.getCruiseList();
-    }
+
+//    @GetMapping()
+//    public List<CruiseModel> getCruiseList(){
+//        return cruiseServiceInterface.getCruiseList();
+//    }
 
     @GetMapping("{cruiseId}")
     public CruiseModel getCruiseInfo(@PathVariable("cruiseId")String id){
@@ -40,10 +42,27 @@ public class CruiseController {
         modelAndView.setViewName("home");
         return modelAndView;
     }
-//    @GetMapping("/home")
-//    public String home(){
-//        return "home";
-//    }
+
+    @GetMapping("/getCruiseList")
+    public ModelAndView getCruiseList() {
+        List<CruiseModel> cruiseList = cruiseServiceInterface.getCruiseList();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("home");
+        modelAndView.addObject("cruiseList", cruiseList);
+        return modelAndView;
+    }
+
+    @PostMapping("/addCruise")
+    public ModelAndView addCruise(@ModelAttribute CruiseModel cruiseModel) {
+        cruiseServiceInterface.createCruiseInfo(cruiseModel);
+        List<CruiseModel> cruiseList = cruiseServiceInterface.getCruiseList();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("home");
+        modelAndView.addObject("cruiseList", cruiseList);
+        return modelAndView;
+    }
+
+
 //
 // @PostMapping("/cruisedetails")
 //   public String cruiseDetails(){

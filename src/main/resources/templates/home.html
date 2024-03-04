@@ -1,18 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Staff Dashboard</title>
 </head>
 <body>
-<h1>This is a page for staff</h1>
-<form method="post" action="cruisedetails">
-    Enter the new CruiseLine to be added :
-    <input type="text" id="Cruisename" placeholder="Cruise Line name"> <br/>
-    Enter the ship name to be added :
-    <input type="text" id="shipname" placeholder="Cruise Line name"> <br/>
-    <input type="submit" value="ADD">
-</form>
+    <h1>This is a page for staff</h1>
+    <button onclick="addNewData()">Add Cruise Data</button>
+    <button onclick="fetchCruiseData()">Fetch Cruise Data</button>
+
+    <div id="addCruiseForm" style="display:none;">
+        <h2>Add New Cruise Data</h2>
+        <form id="cruiseForm" action="/cruise/addCruise" method="post">
+            <!-- Add input fields for cruise data -->
+
+            <label for="_id">Cruise Id;</label>
+            <input type="text" id="_id" name="cruiseId" required><br>
+
+            <label for="cruiseName">Cruise Name:</label>
+            <input type="text" id="cruiseName" name="cruiseName" required><br>
+
+            <label for="shipName">Ship Name:</label>
+            <input type="text" id="shipName" name="shipName" required><br>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div id="fetchData">
+    <!-- Fetch Data-->
+    <ul th:each="cruise : ${cruiseList}">
+    <li th:text="${cruise.cruiseName + ' - ' + cruise.shipName}"></li>
+    </ul>
+    </div>
+
+<script>
+    function addNewData(){
+     document.getElementById("addCruiseForm").style.display = "block";
+     document.getElementById("fetchData").style.display = "none";
+    }
+
+    function fetchCruiseData() {
+        window.location.href = "/cruise/getCruiseList";
+    }
+
+</script>
+
+
 
 
 
