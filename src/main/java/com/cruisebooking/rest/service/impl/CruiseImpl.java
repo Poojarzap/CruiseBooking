@@ -17,6 +17,7 @@ public class CruiseImpl implements CruiseServiceInterface {
         return cruiseRepository.findAll();
     }
 
+
     @Override
     public CruiseModel getCruiseInfo(String id) {
         return cruiseRepository.findById(id).get();

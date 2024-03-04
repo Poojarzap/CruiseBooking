@@ -1,31 +1,36 @@
 package com.cruisebooking.rest.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "CruiseDetails")
 public class CruiseModel {
+
     @Id
-    private String _id;
+    private String cruiseId;
+
     private String cruiseName;
     private String shipName;
 
     public CruiseModel() {
     }
 
-    public CruiseModel(String _id, String cruiseName, String shipName) {
-        this._id = _id;
+    public CruiseModel(String cruiseId, String cruiseName, String shipName) {
+        this.cruiseId = cruiseId;
+
         this.cruiseName = cruiseName;
         this.shipName = shipName;
     }
 
-    public String get_id() {
-        return _id;
+    public String getCruiseId() {
+        return cruiseId;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setCruiseId(String cruiseId) {
+        this.cruiseId = cruiseId;
     }
+
 
     public String getCruiseName() {
         return cruiseName;

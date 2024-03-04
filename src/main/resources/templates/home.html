@@ -1,18 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Staff Dashboard</title>
 </head>
 <body>
-<h1>This is a page for staff</h1>
-<form method="post" action="cruisedetails">
-    Enter the new CruiseLine to be added :
-    <input type="text" id="Cruisename" placeholder="Cruise Line name"> <br/>
-    Enter the ship name to be added :
-    <input type="text" id="shipname" placeholder="Cruise Line name"> <br/>
-    <input type="submit" value="ADD">
-</form>
+    <h1>This is a page for staff</h1>
+    <button onclick="addNewData()">Add Cruise Data</button>
+    <button onclick="fetchCruiseData()">Fetch Cruise Data</button>
+    <button onclick="fetchCruiseDataById()">Fetch Cruise Data By Id</button>
+
+    <div id="addCruiseForm" style="display:none;">
+        <h2>Add New Cruise Data</h2>
+        <form id="cruiseForm" action="/cruise/addCruise" method="post">
+            <!-- Add input fields for cruise data -->
+            <label for="cruiseId">Cruise Id:</label>
+            <input type="text" id="cruiseId" name="cruiseId"><br><br>
+
+            <label for="cruiseName">Cruise Name:</label>
+            <input type="text" id="cruiseName" name="cruiseName" required><br><br>
+
+            <label for="shipName">Ship Name:</label>
+            <input type="text" id="shipName" name="shipName" required><br><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div id="fetchData">
+    <!-- Fetch Data-->
+    <ul th:each="cruise : ${cruiseList}">
+    <li th:text="${cruise.cruiseId + ' - ' + cruise.cruiseName + ' - ' + cruise.shipName}"></li>
+    </ul>
+    </div>
+
+<!--    <div id="fetchDataById">-->
+<!--        <label for="CruiseLine">Choose a Id:</label>&ndash;&gt;-->
+<!--        <br>-->
+<!--        <select name="CruiseLine" id="CruiseLine">-->
+<!--            -->
+<!--            </option> <option value="volvo">Volvo</option>-->
+<!--            <option value="saab">Saab</option>-->
+<!--            <option value="mercedes">Mercedes</option>-->
+<!--            <option value="audi">Audi</option>-->
+<!--        </select>-->
+<!--    </div>-->
+
+<script>
+    function addNewData(){
+     document.getElementById("addCruiseForm").style.display = "block";
+     document.getElementById("fetchData").style.display = "none";
+    }
+
+    function fetchCruiseData() {
+        window.location.href = "/cruise/getCruiseList";
+    }
+
+</script>
+
+
 
 
 
