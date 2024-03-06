@@ -22,28 +22,26 @@
 
             <label for="shipName">Ship Name:</label>
             <input type="text" id="shipName" name="shipName" required><br><br>
+
+            <label for="source">Source :</label>
+            <input type="text" id="source" name="source" required><br><br>
+
+            <label for="destination">Destination:</label>
+            <input type="text" id="destination" name="destination" required><br><br>
+
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" required><br><br>
             <button type="submit">Submit</button>
+
         </form>
     </div>
 
     <div id="fetchData">
     <!-- Fetch Data-->
     <ul th:each="cruise : ${cruiseList}">
-    <li th:text="${cruise.cruiseId + ' - ' + cruise.cruiseName + ' - ' + cruise.shipName}"></li>
+        <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}"></li><hr>
     </ul>
     </div>
-
-<!--    <div id="fetchDataById">-->
-<!--        <label for="CruiseLine">Choose a Id:</label>&ndash;&gt;-->
-<!--        <br>-->
-<!--        <select name="CruiseLine" id="CruiseLine">-->
-<!--            -->
-<!--            </option> <option value="volvo">Volvo</option>-->
-<!--            <option value="saab">Saab</option>-->
-<!--            <option value="mercedes">Mercedes</option>-->
-<!--            <option value="audi">Audi</option>-->
-<!--        </select>-->
-<!--    </div>-->
 
 <script>
     function addNewData(){
