@@ -14,7 +14,6 @@ public class UserModel {
     private String userPassword;
 
     public UserModel( String name,String userName, String userGender, String userEmail, String userPassword, String userPhone) {
-
         this.name=name;
         this.userName = userName;
         this.userGender = userGender;
@@ -22,13 +21,7 @@ public class UserModel {
         this.userPassword = userPassword;
         this.userPhone = userPhone;
     }
-//    public String getUserId() {
-//        return userId;
-//    }
-//
-//    public void setUserId(String userId) {
-//        this.userId = userId;
-//    }
+
 
     public String getName() {
         return name;

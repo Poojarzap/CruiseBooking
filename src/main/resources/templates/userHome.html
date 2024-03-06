@@ -5,7 +5,10 @@
     <title>User Registrtion</title>
 </head>
 <body>
-<div id="userFormdiv">
+<h1>This is a page for User</h1>
+<button onclick="Register()">Register</button>
+
+<div id="userFormdiv" style="display:none">
 <form id="userForm" method="post" action="/cruise/userRegister">
     <label for="name">Name :</label>
     <input type="text" id="name" name="name" placeholder="Enter your name" required><br><br>
@@ -31,13 +34,18 @@
 
         <button type="submit">Submit</button><br><br>
 
-    <script th:if="${showAlert}">
-        alert('User added successfully!');
-    </script>
+
 
 </form>
 </div>
 </body>
 
-<script></script>
+<script>
+    function Register(){
+     document.getElementById('userFormdiv').style="display:block";
+    }
+</script>
+<script th:if="${message}">
+        alert('User added successfully!')
+       </script>
 </html>

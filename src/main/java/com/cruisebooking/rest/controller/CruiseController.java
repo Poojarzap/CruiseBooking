@@ -3,6 +3,7 @@ package com.cruisebooking.rest.controller;
 import com.cruisebooking.rest.model.CruiseModel;
 import com.cruisebooking.rest.model.UserModel;
 import com.cruisebooking.rest.service.CruiseServiceInterface;
+import org.apache.catalina.User;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -64,12 +65,7 @@ public class CruiseController {
     }
 
 
-//    @GetMapping("/userRegister")
-//    public ModelAndView userRegister() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("userRegister");
-//        return modelAndView;
-//    }
+
 //    @PostMapping("/addUser")
 //    public ModelAndView addUser(@ModelAttribute UserModel userModel) {
 //        cruiseServiceInterface.createUserInfo(userModel);
@@ -85,5 +81,22 @@ public class CruiseController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("userHome");
         return modelAndView;
+    }
+    @GetMapping("/userRegister")
+    public ModelAndView userRegister(@ModelAttribute UserModel userModel) {
+        // Assuming createUserInfo method returns a boolean indicating success
+        try {
+            cruiseServiceInterface.createUserInfo(userModel);
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("message", "User registration successful!");
+            modelAndView.setViewName("userHome"); // assuming "userHome" is the view name
+            return modelAndView;
+
+        } catch (Exception e) {
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("message", "User registration failed. Please try again.");
+            modelAndView.setViewName("userHome"); // assuming "userHome" is the view name
+            return modelAndView;
+        }
     }
 }
