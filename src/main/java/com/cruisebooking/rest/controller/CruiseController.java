@@ -6,6 +6,7 @@ import com.cruisebooking.rest.service.CruiseServiceInterface;
 import org.apache.catalina.User;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import java.util.List;
 public class CruiseController {
     @Autowired
     CruiseServiceInterface cruiseServiceInterface;
+
     public CruiseController(CruiseServiceInterface cruiseServiceInterface) {
         this.cruiseServiceInterface = cruiseServiceInterface;
     }
@@ -27,13 +29,12 @@ public class CruiseController {
 //    }
 
     @GetMapping("{cruiseId}")
-    public CruiseModel getCruiseInfo(@PathVariable("cruiseId")String id){
+    public CruiseModel getCruiseInfo(@PathVariable("cruiseId") String id) {
         return cruiseServiceInterface.getCruiseInfo(id);
     }
 
     @PostMapping
-    public String createCruise(@RequestBody CruiseModel cruiseModel)
-    {
+    public String createCruise(@RequestBody CruiseModel cruiseModel) {
         cruiseServiceInterface.createCruiseInfo(cruiseModel);
         return "Successfull";
     }
@@ -65,7 +66,6 @@ public class CruiseController {
     }
 
 
-
 //    @PostMapping("/addUser")
 //    public ModelAndView addUser(@ModelAttribute UserModel userModel) {
 //        cruiseServiceInterface.createUserInfo(userModel);
@@ -82,21 +82,13 @@ public class CruiseController {
         modelAndView.setViewName("userHome");
         return modelAndView;
     }
-    @GetMapping("/userRegister")
+    @PostMapping("/userRegister")
     public ModelAndView userRegister(@ModelAttribute UserModel userModel) {
-        // Assuming createUserInfo method returns a boolean indicating success
-        try {
-            cruiseServiceInterface.createUserInfo(userModel);
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("message", "User registration successful!");
-            modelAndView.setViewName("userHome"); // assuming "userHome" is the view name
-            return modelAndView;
+        cruiseServiceInterface.createUserInfo(userModel);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("userHome");
+        return modelAndView;
 
-        } catch (Exception e) {
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.addObject("message", "User registration failed. Please try again.");
-            modelAndView.setViewName("userHome"); // assuming "userHome" is the view name
-            return modelAndView;
-        }
     }
+
 }

@@ -14,6 +14,7 @@ import java.util.List;
 public class CruiseImpl implements CruiseServiceInterface {
     @Autowired
     CruiseRepository cruiseRepository;
+    @Autowired
     UserRepository userRepository;
 
     @Override

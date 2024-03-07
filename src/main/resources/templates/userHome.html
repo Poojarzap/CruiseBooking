@@ -6,10 +6,10 @@
 </head>
 <body>
 <h1>This is a page for User</h1>
-<button onclick="Register()">Register</button>
+<button onclick="register()">Register</button><br><br>
 
 <div id="userFormdiv" style="display:none">
-<form id="userForm" method="post" action="/cruise/userRegister">
+<form id="userForm" action="/cruise/userRegister" method="post" >
     <label for="name">Name :</label>
     <input type="text" id="name" name="name" placeholder="Enter your name" required><br><br>
 
@@ -33,19 +33,14 @@
     <input type="text" id="userPhone" name="userPhone" placeholder="Enter your Mobile Number" required maxlength="10"><br><br>
 
         <button type="submit">Submit</button><br><br>
-
-
-
 </form>
 </div>
 </body>
 
 <script>
-    function Register(){
-     document.getElementById('userFormdiv').style="display:block";
+    function register(){
+     document.getElementById("userFormdiv").style.display = "block";
     }
 </script>
-<script th:if="${message}">
-        alert('User added successfully!')
-       </script>
+
 </html>
