@@ -2,10 +2,59 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Registrtion</title>
+    <title>User Registration</title>
 </head>
 <body>
 <h1>This is a page for User</h1>
+
+<button onclick="result1()">Search by source and destination</button>
+<button>Search by date</button>
+<button onclick="result2()">Search by price</button>
+
+<div id="sdSearchDiv" style="display:none">
+    <form id="search" action="/search" method="get">
+        <label for="source">Source :</label>
+        <input type="text" id="source" name="source" placeholder="Enter your source " required><br><br>
+
+        <label for="destination">Destination : </label>
+        <input type="text" id="destination" name="destination" placeholder="Enter your destination "/><br><br>
+
+        <button type="submit">SEARCH</button><br><br>
+    </form>
+</div>
+
+<div id="priceDiv" style="display:none">
+    <form id="price" action="cruise/searchByPrice" method="get">
+        <label for="startPrice">Source :</label>
+        <input type="text" id="startPrice" name="startPrice" placeholder="Enter your start price range" required><br><br>
+
+        <label for="startPrice">Destination : </label>
+        <input type="text" id="endPrice" name="endPrice" placeholder="Enter your end price range"/><br><br>
+
+        <button type="submit">SEARCH</button><br><br>
+    </form>
+</div>
+
+
+<div id="searchResult">
+    <ul th:each="cruise : ${searchResults}">
+        <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}"></li><hr>
+    </ul>
+</div>
+
+<script>
+    function result1(){
+        document.getElementById("sdSearchDiv").style.display = "block";
+        document.getElementById("priceDiv").style.display = "none";
+
+   }
+     function result2(){
+        document.getElementById("sdSearchDiv").style.display = "none";
+        document.getElementById("priceDiv").style.display = "block";
+
+   }
+
+</script>
 
 </body>
 </html>

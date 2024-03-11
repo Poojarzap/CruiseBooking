@@ -12,7 +12,7 @@
 
     <div id="addCruiseForm" style="display:none;">
         <h2>Add New Cruise Data</h2>
-        <form id="cruiseForm" action="/cruise/addCruise" method="post">
+        <form id="cruiseForm" action="/addCruise" method="post">
             <!-- Add input fields for cruise data -->
             <label for="cruiseId">Cruise Id:</label>
             <input type="text" id="cruiseId" name="cruiseId"><br><br>
@@ -50,7 +50,7 @@
     }
 
     function fetchCruiseData() {
-        window.location.href = "/cruise/getCruiseList";
+        window.location.href = "/getCruiseList";
     }
 
 </script>
