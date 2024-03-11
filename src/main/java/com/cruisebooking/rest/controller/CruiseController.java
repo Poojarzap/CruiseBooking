@@ -3,35 +3,63 @@ package com.cruisebooking.rest.controller;
 import com.cruisebooking.rest.model.CruiseModel;
 import com.cruisebooking.rest.model.UserModel;
 import com.cruisebooking.rest.service.CruiseServiceInterface;
-import org.apache.catalina.User;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.ui.Model;
-
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cruise")
+
 public class CruiseController {
+    @Value("${authentication.phoneNumber}")
+    private String validPhoneNumber;
+
+    @Value("${authentication.password}")
+    private String validPassword;
     @Autowired
     CruiseServiceInterface cruiseServiceInterface;
 
     public CruiseController(CruiseServiceInterface cruiseServiceInterface) {
         this.cruiseServiceInterface = cruiseServiceInterface;
     }
-//    @GetMapping()
-//    public List<CruiseModel> getCruiseList(){
-//        return cruiseServiceInterface.getCruiseList();
-//    }
 
-    @GetMapping("{cruiseId}")
-    public CruiseModel getCruiseInfo(@PathVariable("cruiseId") String id) {
-        return cruiseServiceInterface.getCruiseInfo(id);
+    @PostMapping("/login")
+    public ModelAndView login(@RequestParam String userPhone, @RequestParam String userPassword) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        try {
+            if (validPhoneNumber.equals(userPhone) && validPassword.equals(userPassword)) {
+                modelAndView.setViewName("home");
+            } else {
+                UserModel user = cruiseServiceInterface.findUserFromDb(userPhone);
+                if (user != null && user.getUserPassword().equals(userPassword)) {
+                    modelAndView.setViewName("userHome");
+                }
+            }
+        } catch (Exception e) {
+            modelAndView.setViewName("index");
+            modelAndView.addObject("errorMessage", "Invalid phone number or password. Please try again.");
+            modelAndView.addObject("showAlert", true);
+        }
+        return modelAndView;
     }
+
+    @PostMapping("/userRegister")
+    public ModelAndView userRegister(@ModelAttribute UserModel userModel) {
+        cruiseServiceInterface.createUserInfo(userModel);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("index");
+        return modelAndView;
+    }
+
+
+
+
+//    @GetMapping("{cruiseId}")
+//    public CruiseModel getCruiseInfo(@PathVariable("cruiseId") String id) {
+//        return cruiseServiceInterface.getCruiseInfo(id);
+//    }
 
     @PostMapping
     public String createCruise(@RequestBody CruiseModel cruiseModel) {
@@ -82,13 +110,6 @@ public class CruiseController {
         modelAndView.setViewName("userHome");
         return modelAndView;
     }
-    @PostMapping("/userRegister")
-    public ModelAndView userRegister(@ModelAttribute UserModel userModel) {
-        cruiseServiceInterface.createUserInfo(userModel);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("userHome");
-        return modelAndView;
 
-    }
 
 }

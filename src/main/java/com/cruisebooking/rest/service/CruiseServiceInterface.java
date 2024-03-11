@@ -8,10 +8,12 @@ import java.util.List;
 public interface CruiseServiceInterface {
     //Cruise Implementations
     public List<CruiseModel> getCruiseList();
-    public CruiseModel getCruiseInfo(String id);
+    //public CruiseModel getCruiseInfo(String id);
     public CruiseModel createCruiseInfo(CruiseModel cd);
 
 
     //User Implementations
     public UserModel createUserInfo(UserModel userInfo);
+    public UserModel findUserFromDb(String userPhone);
+
 }

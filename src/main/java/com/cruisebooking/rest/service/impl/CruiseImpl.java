@@ -21,11 +21,10 @@ public class CruiseImpl implements CruiseServiceInterface {
     public List<CruiseModel> getCruiseList() {
         return cruiseRepository.findAll();
     }
-    @Override
-    public CruiseModel getCruiseInfo(String id) {
-        return cruiseRepository.findById(id).get();
-    }
-
+    //@Override
+//    public CruiseModel getCruiseInfo(String id) {
+//        return cruiseRepository.findById(id).get();
+//    }
     @Override
     public CruiseModel createCruiseInfo(CruiseModel cd) {
         return cruiseRepository.save(cd);
@@ -33,5 +32,10 @@ public class CruiseImpl implements CruiseServiceInterface {
     @Override
     public UserModel createUserInfo(UserModel userInfo) {
         return userRepository.save(userInfo);
+    }
+
+    @Override
+    public UserModel findUserFromDb(String userPhone) {
+        return userRepository.findById(userPhone).get();
     }
 }

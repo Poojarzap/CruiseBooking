@@ -1,46 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>User Registrtion</title>
 </head>
 <body>
 <h1>This is a page for User</h1>
-<button onclick="register()">Register</button><br><br>
 
-<div id="userFormdiv" style="display:none">
-<form id="userForm" action="/cruise/userRegister" method="post" >
-    <label for="name">Name :</label>
-    <input type="text" id="name" name="name" placeholder="Enter your name" required><br><br>
-
-    <label for="userName">Username:</label>
-    <input type="text" id="userName" name="userName" placeholder="Enter your userName" required><br><br>
-
-    <label for="gender">Gender:</label>
-    <select id="gender" name="gender" required>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-    </select><br><br>
-
-    <label for="userEmail">Email:</label>
-    <input type="email" id="userEmail" name="userEmail" placeholder="Enter your email" required><br><br>
-
-    <label for="userPassword">Password:</label>
-    <input type="password" id="userPassword" name="userPassword" placeholder="Enter your password"/><br><br>
-
-    <label for="userPhone">Contact:</label>
-    <input type="text" id="userPhone" name="userPhone" placeholder="Enter your Mobile Number" required maxlength="10"><br><br>
-
-        <button type="submit">Submit</button><br><br>
-</form>
-</div>
 </body>
-
-<script>
-    function register(){
-     document.getElementById("userFormdiv").style.display = "block";
-    }
-</script>
-
 </html>
