@@ -9,8 +9,8 @@ import java.util.List;
 
 @Repository
 public interface CruiseRepository extends MongoRepository<CruiseModel, String> {
+   @Query("{ 'price' : { $gte: ?0, $lte: ?1 } }")
+    List<CruiseModel> findByPriceBetween(double startPrice, double endPrice);
     List<CruiseModel> findBySourceAndDestination(String source, String destination);
-    @Query("{ 'price' : { $gte: ?0, $lte: ?1 } }")
-    List<CruiseModel> findByPriceBetween(String startPrice, String endPrice);
 
 }

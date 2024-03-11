@@ -24,11 +24,11 @@
 </div>
 
 <div id="priceDiv" style="display:none">
-    <form id="price" action="cruise/searchByPrice" method="get">
-        <label for="startPrice">Source :</label>
+    <form id="priceForm" action="/searchByPrice" method="get">
+        <label for="startPrice">Start Price :</label>
         <input type="text" id="startPrice" name="startPrice" placeholder="Enter your start price range" required><br><br>
 
-        <label for="startPrice">Destination : </label>
+        <label for="endPrice">End Price : </label>
         <input type="text" id="endPrice" name="endPrice" placeholder="Enter your end price range"/><br><br>
 
         <button type="submit">SEARCH</button><br><br>
@@ -36,7 +36,7 @@
 </div>
 
 
-<div id="searchResult">
+<div id="searchResultDiv">
     <ul th:each="cruise : ${searchResults}">
         <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}"></li><hr>
     </ul>

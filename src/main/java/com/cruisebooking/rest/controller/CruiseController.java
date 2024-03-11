@@ -141,15 +141,13 @@ public class CruiseController {
     }
 
     @GetMapping("/searchByPrice")
-    public ModelAndView searchByPrice(
-            @RequestParam String startPrice,
-            @RequestParam String endPrice) {
-
-        List<CruiseModel> result= cruiseServiceInterface.searchCruisesByPriceRange(startPrice, endPrice);
-
+    public ModelAndView searchByPrice(@RequestParam double startPrice,@RequestParam double endPrice) {
+        System.out.println(endPrice);
+        List<CruiseModel> searchResults= cruiseServiceInterface.searchCruisesByPriceRange(startPrice,endPrice);
+        System.out.println(searchResults);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("userHome"); // Adjust the view name as needed
-        modelAndView.addObject("searchResults", result);
+        modelAndView.addObject("searchResults", searchResults);
 
         return modelAndView;
     }

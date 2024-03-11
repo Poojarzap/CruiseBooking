@@ -16,6 +16,6 @@ public interface CruiseServiceInterface {
     public UserModel createUserInfo(UserModel userInfo);
     public UserModel findUserFromDb(String userPhone);
     List<CruiseModel> searchCruises(String source, String destination);
-    List<CruiseModel> searchCruisesByPriceRange(String startPrice, String endPrice);
+    List<CruiseModel> searchCruisesByPriceRange(double startPrice, double endPrice);
 
 }
