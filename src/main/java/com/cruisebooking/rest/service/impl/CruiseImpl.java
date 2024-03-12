@@ -1,30 +1,37 @@
 package com.cruisebooking.rest.service.impl;
 
+import com.cruisebooking.rest.model.BookingModel;
 import com.cruisebooking.rest.model.CruiseModel;
 import com.cruisebooking.rest.model.UserModel;
+import com.cruisebooking.rest.repository.BookRepository;
 import com.cruisebooking.rest.repository.CruiseRepository;
 import com.cruisebooking.rest.repository.UserRepository;
 import com.cruisebooking.rest.service.CruiseServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 @Service
 public class CruiseImpl implements CruiseServiceInterface {
+
     @Autowired
     CruiseRepository cruiseRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    BookRepository bookRepository;
+
 
 
     @Override
     public List<CruiseModel> getCruiseList() {
         return cruiseRepository.findAll();
     }
-    //@Override
-//    public CruiseModel getCruiseInfo(String id) {
-//        return cruiseRepository.findById(id).get();
-//    }
     @Override
     public CruiseModel createCruiseInfo(CruiseModel cd) {
         return cruiseRepository.save(cd);
@@ -39,11 +46,6 @@ public class CruiseImpl implements CruiseServiceInterface {
         return userRepository.findById(userPhone).get();
     }
 
-//    @Override
-//    public List<CruiseModel> searchCruisesByPriceRange(String startPrice, String endPrice) {
-//        return cruiseRepository.findByPriceBetween(startPrice, endPrice);
-//    }
-
     @Override
     public List<CruiseModel> searchCruises(String source, String destination) {
         // Implement the logic to search for cruises in the database
@@ -54,8 +56,14 @@ public class CruiseImpl implements CruiseServiceInterface {
             return cruiseRepository.findByPriceBetween(startPrice,endPrice);
     }
 
-
-
-
+//    @Override
+//    public int getLatestBookingId() {
+//        BookingModel latestBooking = bookRepository.findTopByOrderByBookingIdDesc();
+//        return (latestBooking != null && latestBooking.getBookingId() != null) ? Integer.parseInt(latestBooking.getBookingId()) : 0;
+//    }
+    @Override
+    public BookingModel createBookInfo(BookingModel bookingModel) {
+        return bookRepository.save(bookingModel);
+    }
 
 }

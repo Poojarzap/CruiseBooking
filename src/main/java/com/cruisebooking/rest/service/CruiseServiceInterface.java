@@ -1,5 +1,6 @@
 package com.cruisebooking.rest.service;
 
+import com.cruisebooking.rest.model.BookingModel;
 import com.cruisebooking.rest.model.CruiseModel;
 import com.cruisebooking.rest.model.UserModel;
 
@@ -17,5 +18,9 @@ public interface CruiseServiceInterface {
     public UserModel findUserFromDb(String userPhone);
     List<CruiseModel> searchCruises(String source, String destination);
     List<CruiseModel> searchCruisesByPriceRange(double startPrice, double endPrice);
+
+
+
+    public BookingModel createBookInfo(BookingModel bookingModel);
 
 }

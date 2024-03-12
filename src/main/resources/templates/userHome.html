@@ -8,8 +8,9 @@
 <h1>This is a page for User</h1>
 
 <button onclick="result1()">Search by source and destination</button>
-<button>Search by date</button>
+<!--<button>Search by date</button>-->
 <button onclick="result2()">Search by price</button>
+<button onclick="bookings()">My Bookings</button>
 
 <div id="sdSearchDiv" style="display:none">
     <form id="search" action="/search" method="get">
@@ -35,10 +36,24 @@
     </form>
 </div>
 
+<!--<div id="booksDiv" style="display:none">-->
+<!--    <p>-->
+<!--    </p>-->
+<!--</div>-->
 
 <div id="searchResultDiv">
     <ul th:each="cruise : ${searchResults}">
-        <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}"></li><hr>
+        <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}"></li>
+
+<!--        <p th:text="'User: ' + ${userInfo.userName}"></p>-->
+        <!-- Wrap the details and button inside a form -->
+        <form th:action="@{/bookCruise}" method="post" th:object="${bookingModel}">
+            <input type="hidden" name="bookingUser" th:value="${userInfo.userPhone}">
+            <input type="hidden" name="bookingCruise" th:value="${cruise.cruiseId}">
+            <button type="submit" style="color:red">BOOK</button>
+        </form>
+
+        <hr>
     </ul>
 </div>
 
@@ -46,13 +61,17 @@
     function result1(){
         document.getElementById("sdSearchDiv").style.display = "block";
         document.getElementById("priceDiv").style.display = "none";
-
    }
      function result2(){
         document.getElementById("sdSearchDiv").style.display = "none";
         document.getElementById("priceDiv").style.display = "block";
-
    }
+   function book(){
+    window.location.href = "/book";
+   }
+<!--    function bookings(){-->
+
+<!--    }-->
 
 </script>
 
