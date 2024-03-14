@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <title>User Registration</title>
 </head>
-<body>
+<body onload="checkPageLoad()">
 <h1>This is a page for User</h1>
 
 <button onclick="result1()">Search by source and destination</button>
-<!--<button>Search by date</button>-->
 <button onclick="result2()">Search by price</button>
 <button onclick="bookings()">My Bookings</button>
+
+
 
 <div id="sdSearchDiv" style="display:none">
     <form id="search" action="/search" method="get">
@@ -28,18 +29,40 @@
     <form id="priceForm" action="/searchByPrice" method="get">
         <label for="startPrice">Start Price :</label>
         <input type="text" id="startPrice" name="startPrice" placeholder="Enter your start price range" required><br><br>
-
         <label for="endPrice">End Price : </label>
         <input type="text" id="endPrice" name="endPrice" placeholder="Enter your end price range"/><br><br>
-
         <button type="submit">SEARCH</button><br><br>
     </form>
 </div>
 
-<!--<div id="booksDiv" style="display:none">-->
-<!--    <p>-->
-<!--    </p>-->
-<!--</div>-->
+
+
+<br>
+
+<br>
+<div id="booksDiv" style="display:block">
+<!--        <p>Bookings :</p>-->
+    <h3 id="bookingsHeading" style="display: none">Bookings : </h3>
+    <ul>
+<!--        <li th:each="result : ${combinedProject}" th:text="${result} + '\n'"></li>-->
+        <li th:each="result : ${combinedProject}">
+            <script th:inline="javascript">
+                var bookingIdVar = /*[[${result.bookingModel.bookingId}]]*/ '';
+            </script>
+            <p><strong>Booking ID:</strong> <span th:text="${result.bookingModel.bookingId}"></span></p>
+            <p><strong>User Phone:</strong> <span th:text="${result.userModel.userPhone}"></span></p>
+            <p><strong>Cruise Name:</strong> <span th:text="${result.cruiseModel.cruiseName}"></span></p>
+            <p><strong>Ship Name:</strong> <span th:text="${result.cruiseModel.shipName}"></span></p>
+            <p><strong>Source-Destination:</strong> <span th:text="${result.cruiseModel.source+ '-' +result.cruiseModel.destination}"></span></p>
+            <p><strong>Price:</strong> <span th:text="${result.cruiseModel.price}"></span></p>
+            <button th:attr="onclick='cancelBooking(\'' + ${result.bookingModel.bookingId} + '\')'">Cancel</button>
+            <hr>
+        </li>
+    </ul>
+
+</div>
+
+
 
 <div id="searchResultDiv">
     <ul th:each="cruise : ${searchResults}">
@@ -57,23 +80,53 @@
     </ul>
 </div>
 
+
 <script>
+    function checkPageLoad() {
+        // Check if the current URL includes "/bookings"
+        if (window.location.href.includes("/bookings")) {
+            document.getElementById("bookingsHeading").style.display = "block";
+            document.getElementById("booksDiv").style.display = "block";
+        }
+    }
+
     function result1(){
+
         document.getElementById("sdSearchDiv").style.display = "block";
         document.getElementById("priceDiv").style.display = "none";
+        document.getElementById("booksDiv").style.display = "none";
    }
      function result2(){
+
         document.getElementById("sdSearchDiv").style.display = "none";
         document.getElementById("priceDiv").style.display = "block";
+        document.getElementById("booksDiv").style.display = "none";
    }
-   function book(){
-    window.location.href = "/book";
-   }
-<!--    function bookings(){-->
 
-<!--    }-->
+    function bookings() {
+    window.location.href = "/bookings";
+        setTimeOut(function(){
+        document.getElementById("sdSearchDiv").style.display = "none";
+        document.getElementById("priceDiv").style.display = "none";
+        document.getElementById("booksDiv").style.display = "block";
+    },1000);
+}
+    function cancelBooking(bookingId) {
+        fetch('/cancel-booking/' + bookingId, {
+            method: 'DELETE'
+        });
+        setTimeout(function(){
+        alert("Deleted successfully");
+         document.getElementById("sdSearchDiv").style.display = "none";
+        document.getElementById("priceDiv").style.display = "none";
+        document.getElementById("booksDiv").style.display = "none";
+        },1000);
+      }
+
 
 </script>
+
+
 
 </body>
 </html>

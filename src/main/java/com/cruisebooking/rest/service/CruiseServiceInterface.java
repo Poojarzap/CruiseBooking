@@ -11,6 +11,7 @@ public interface CruiseServiceInterface {
     public List<CruiseModel> getCruiseList();
     //public CruiseModel getCruiseInfo(String id);
     public CruiseModel createCruiseInfo(CruiseModel cd);
+    public CruiseModel findCruiseById(String cruiseId);
 
 
     //User Implementations
@@ -22,5 +23,8 @@ public interface CruiseServiceInterface {
 
 
     public BookingModel createBookInfo(BookingModel bookingModel);
+    public List<BookingModel> getBookingInfo(String bookingUser);
+
+    public Boolean cancelBookingById(String bookingId);
 
 }

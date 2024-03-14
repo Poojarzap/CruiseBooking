@@ -8,13 +8,9 @@ import com.cruisebooking.rest.repository.CruiseRepository;
 import com.cruisebooking.rest.repository.UserRepository;
 import com.cruisebooking.rest.service.CruiseServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 
 import org.springframework.stereotype.Service;
 import java.util.List;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Service
 public class CruiseImpl implements CruiseServiceInterface {
@@ -36,6 +32,13 @@ public class CruiseImpl implements CruiseServiceInterface {
     public CruiseModel createCruiseInfo(CruiseModel cd) {
         return cruiseRepository.save(cd);
     }
+
+    @Override
+    public CruiseModel findCruiseById(String cruiseId) {
+        return cruiseRepository.findById(cruiseId).get();
+    }
+
+
     @Override
     public UserModel createUserInfo(UserModel userInfo) {
         return userRepository.save(userInfo);
@@ -64,6 +67,17 @@ public class CruiseImpl implements CruiseServiceInterface {
     @Override
     public BookingModel createBookInfo(BookingModel bookingModel) {
         return bookRepository.save(bookingModel);
+    }
+
+    @Override
+    public List<BookingModel> getBookingInfo(String bookingUser) {
+        return bookRepository.findAllByBookingUser(bookingUser);
+    }
+
+    @Override
+    public Boolean cancelBookingById(String bookingId) {
+        bookRepository.deleteById(bookingId);
+        return true;
     }
 
 }
