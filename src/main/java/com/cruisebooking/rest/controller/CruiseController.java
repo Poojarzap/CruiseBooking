@@ -8,6 +8,7 @@ import com.cruisebooking.rest.model.UserModel;
 import com.cruisebooking.rest.service.CruiseServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.Banner;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
@@ -81,6 +82,15 @@ public class CruiseController {
         return modelAndView;
     }
 
+    @GetMapping("/fetchCruiseDataById")
+    public ModelAndView fetchCruise(@RequestParam String cruiseId){
+        CruiseModel cd=cruiseServiceInterface.findCruiseById(cruiseId);
+        System.out.println(cd);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("cruiseList",cd);
+        modelAndView.setViewName("home");
+        return modelAndView;
+    }
 
 //    @GetMapping("{cruiseId}")
 //    public CruiseModel getCruiseInfo(@PathVariable("cruiseId") String id) {
@@ -223,8 +233,7 @@ public class CruiseController {
             // Add the Map to the list
             combinedDataList.add(combinedData);
         }
-
-// Print or use the combinedDataList as needed
+        // Print or use the combinedDataList as needed
         System.out.println(combinedDataList);
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.addObject("combinedProject",combinedDataList);
@@ -232,12 +241,40 @@ public class CruiseController {
         return modelAndView;
     }
 
-    @DeleteMapping()
-    public ModelAndView cancelBooking(){
+    @GetMapping("/fetchBookings")
+    public ModelAndView fetchAllBookings(){
+        List<BookingModel> bookingModelList=cruiseServiceInterface.getAllBookings();
+        List<CruiseModel> cruiseList = new ArrayList<>();
+        List<UserModel> userList = new ArrayList<>();
+        List<Map<String, Object>> combinedDataList = new ArrayList<>();
+
+        for (int i = 0; i < bookingModelList.size(); i++) {
+            BookingModel bookingModel = bookingModelList.get(i);
+            CruiseModel cruiseModel = cruiseServiceInterface.findCruiseById(bookingModel.getBookingCruise());
+            UserModel userModel = cruiseServiceInterface.findUserFromDb(bookingModel.getBookingUser());
+
+            cruiseList.add(cruiseModel);
+            userList.add(userModel);
+
+            // Create a Map to represent combined data
+            Map<String, Object> combinedData = new HashMap<>();
+            combinedData.put("bookingModel", bookingModel);
+            combinedData.put("cruiseModel", cruiseModel);
+            combinedData.put("userModel", userModel);
+            // Add the Map to the list
+            combinedDataList.add(combinedData);
+        }
+        // Print or use the combinedDataList as needed
+        System.out.println(combinedDataList);
         ModelAndView modelAndView=new ModelAndView();
-        modelAndView.setViewName("userHome");
+        modelAndView.addObject("combinedProject",combinedDataList);
+        modelAndView.setViewName("home");
+//        ModelAndView modelAndView=new ModelAndView();
+//        modelAndView.addObject("bookings",bookingModelList);
+//        modelAndView.setViewName("home");
         return modelAndView;
     }
+
 
     @DeleteMapping("/cancel-booking/{bookingId}")
     public ModelAndView cancelBooking(@PathVariable("bookingId") String bookingId) {
@@ -248,4 +285,8 @@ public class CruiseController {
         return modelAndView;
 
     }
+
+
+
+
 }

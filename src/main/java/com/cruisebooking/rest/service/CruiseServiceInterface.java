@@ -24,6 +24,7 @@ public interface CruiseServiceInterface {
 
     public BookingModel createBookInfo(BookingModel bookingModel);
     public List<BookingModel> getBookingInfo(String bookingUser);
+    public List<BookingModel> getAllBookings();
 
     public Boolean cancelBookingById(String bookingId);
 

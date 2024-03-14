@@ -75,6 +75,11 @@ public class CruiseImpl implements CruiseServiceInterface {
     }
 
     @Override
+    public List<BookingModel> getAllBookings() {
+        return bookRepository.findAll();
+    }
+
+    @Override
     public Boolean cancelBookingById(String bookingId) {
         bookRepository.deleteById(bookingId);
         return true;

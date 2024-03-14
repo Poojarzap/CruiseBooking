@@ -9,6 +9,7 @@
     <button onclick="addNewData()">Add Cruise Data</button>
     <button onclick="fetchCruiseData()">Fetch Cruise Data</button>
     <button onclick="fetchCruiseDataById()">Fetch Cruise Data By Id</button>
+    <button onclick="fetchAllBookings()">Fetch All Bookings</button>
 
     <div id="addCruiseForm" style="display:none;">
         <h2>Add New Cruise Data</h2>
@@ -36,6 +37,13 @@
         </form>
     </div>
 
+    <div id="fetchCruise" style="display:none">
+        <form id="cruiseIdForm" action="/fetchCruiseDataById" method="get">
+        Enter the cruiseId : <input type="text" id="cruiseIdField" name="cruiseId" required>
+            <button type="submit">FETCH</button>
+        </form>
+    </div>
+
     <div id="fetchData">
     <!-- Fetch Data-->
     <ul th:each="cruise : ${cruiseList}">
@@ -43,14 +51,43 @@
     </ul>
     </div>
 
+    <div id="booksDiv" style="display:block">
+        <!--        <p>Bookings :</p>-->
+        <h3 id="bookingsHeading" style="display: none">Bookings : </h3>
+        <ul>
+            <!--        <li th:each="result : ${combinedProject}" th:text="${result} + '\n'"></li>-->
+            <li th:each="result : ${combinedProject}">
+                <p><strong>Booking ID:</strong> <span th:text="${result.bookingModel.bookingId}"></span></p>
+                <p><strong>User Phone:</strong> <span th:text="${result.userModel.userPhone}"></span></p>
+                <p><strong>Cruise Name:</strong> <span th:text="${result.cruiseModel.cruiseName}"></span></p>
+                <p><strong>Ship Name:</strong> <span th:text="${result.cruiseModel.shipName}"></span></p>
+                <p><strong>Source-Destination:</strong> <span th:text="${result.cruiseModel.source+ '-' +result.cruiseModel.destination}"></span></p>
+                <p><strong>Price:</strong> <span th:text="${result.cruiseModel.price}"></span></p>
+                <hr>
+            </li>
+        </ul>
+
+    </div>
+
 <script>
     function addNewData(){
      document.getElementById("addCruiseForm").style.display = "block";
      document.getElementById("fetchData").style.display = "none";
+     document.getElementById("fetchCruise").style.display = "none";
     }
 
     function fetchCruiseData() {
         window.location.href = "/getCruiseList";
+    }
+
+    function fetchCruiseDataById(){
+       document.getElementById("addCruiseForm").style.display = "none";
+       document.getElementById("fetchData").style.display = "none";
+     document.getElementById("fetchCruise").style.display = "block";
+    }
+
+    function fetchAllBookings(){
+        window.location.href="/fetchBookings";
     }
 
 </script>
