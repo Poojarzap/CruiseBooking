@@ -119,11 +119,13 @@ public class CruiseController {
     }
 
     @PutMapping("/updateCruise")
-    public void updateCruiseData(@ModelAttribute CruiseModel cruiseModel)
+    public ModelAndView updateCruiseData(@ModelAttribute CruiseModel cruiseModel)
     {
         System.out.println(cruiseModel.getCruiseId());
         cruiseServiceInterface.updateCruieData(cruiseModel);
-
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("home");
+        return modelAndView;
    }
 
 

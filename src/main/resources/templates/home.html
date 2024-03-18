@@ -45,8 +45,6 @@
     </div>
 
 
-
-
     <div id="fetchData">
         <!-- Fetch Data-->
         <ul th:each="cruise : ${cruiseList}">
@@ -64,10 +62,9 @@
 
 
     <div id="booksDiv" style="display:block">
-        <!--        <p>Bookings :</p>-->
         <h3 id="bookingsHeading" style="display: none">Bookings : </h3>
         <ul>
-            <!--        <li th:each="result : ${combinedProject}" th:text="${result} + '\n'"></li>-->
+
             <li th:each="result : ${combinedProject}">
                 <p><strong>Booking ID:</strong> <span th:text="${result.bookingModel.bookingId}"></span></p>
                 <p><strong>User Phone:</strong> <span th:text="${result.userModel.userPhone}"></span></p>
@@ -114,7 +111,7 @@
     function fetchAllBookings(){
       window.location.href="/fetchBookings";
     }
-
+l
 function updateCruiseData(button) {
     var cruiseId = button.getAttribute('data-cruise-id');
     var cruiseName = button.getAttribute('data-cruise-name');
@@ -122,8 +119,6 @@ function updateCruiseData(button) {
     var source = button.getAttribute('data-source');
     var destination = button.getAttribute('data-destination');
     var price = button.getAttribute('data-price');
-    console.log(cruiseId)
-    updateButtonText();
 
     // Populate form fields with retrieved values
     document.getElementById('cruiseId').value = cruiseId;
@@ -133,33 +128,26 @@ function updateCruiseData(button) {
     document.getElementById('destination').value = destination;
     document.getElementById('price').value = price;
 
-    // Set form method to PUT
-    document.getElementById('cruiseForm').setAttribute('method', 'PUT');
-
     // Display the form
     document.getElementById('addCruiseForm').style.display = 'block';
     document.getElementById("fetchData").style.display = "none";
     document.getElementById("fetchCruise").style.display = "none";
     document.getElementById("booksDiv").style.display = "none";
+    updateButtonText();
 }
 
 function updateButtonText() {
     document.getElementById('headingUpdate').innerText = "Update Form";
     document.getElementById('buttonSubmit').innerText = "Update";
+    document.getElementById('buttonSubmit').setAttribute('id', 'newSubmitButtonId');
     document.getElementById('cruiseForm').setAttribute('action', '/updateCruise');
     document.getElementById('cruiseId').disabled = true; // Keep cruiseId disabled
 }
 
 
 function submitForm() {
-console.log("gdjdscschsc");
-    document.getElementById('cruiseId').disabled = false;
-<!--    document.getElementById('cruiseForm').submit();-->
-
-
    var form = document.getElementById('cruiseForm');
     var formData = new FormData(form);
-
     fetch(form.getAttribute('action'), {
         method: 'PUT',
         body: formData
@@ -168,23 +156,41 @@ console.log("gdjdscschsc");
         if (!response.ok) {
             throw new Error('Failed to update cruise data');
         }
-        // Optionally, handle success response
     })
     .catch(error => {
         console.error('Error updating cruise data:', error);
     });
 }
 
+
+
 // Add event listener to the "Update" button
     document.getElementById('buttonSubmit').addEventListener('click', function(event) {
+    // Check if the ID is 'buttonSubmit'
+    if (this.id === 'buttonSubmit') {
+       fetch(form.getAttribute('action'), {
+        method: 'POST',
+    })
+    }
+    else
+    {
+    document.getElementById('cruiseId').disabled = false;
+    document.getElementById('cruiseForm').setAttribute('action', '/updateCruise');
+     // Call the submitForm() function
+        event.preventDefault();
+        submitForm();
+    setTimeout(function(){
+        alert("updated successfully");
+         document.getElementById('addCruiseForm').style.display = 'none';
+    document.getElementById("fetchData").style.display = "none";
+    document.getElementById("fetchCruise").style.display = "none";
+    document.getElementById("booksDiv").style.display = "none";
+        },1000);
+      }
 
-    event.preventDefault();
-
-    // Call the submitForm() function
-    submitForm();
+    });
 
 
-});
 
 
 </script>
