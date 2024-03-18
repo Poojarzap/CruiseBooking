@@ -38,6 +38,11 @@ public class CruiseImpl implements CruiseServiceInterface {
         return cruiseRepository.findById(cruiseId).get();
     }
 
+    @Override
+    public  void updateCruieData(CruiseModel cd) {
+         cruiseRepository.save(cd);
+    }
+
 
     @Override
     public UserModel createUserInfo(UserModel userInfo) {
@@ -49,21 +54,22 @@ public class CruiseImpl implements CruiseServiceInterface {
         return userRepository.findById(userPhone).get();
     }
 
-    @Override
-    public List<CruiseModel> searchCruises(String source, String destination) {
+//    @Override
+//    public List<CruiseModel> searchCruises(String source, String destination) {
+//        // Implement the logic to search for cruises in the database
+//        return cruiseRepository.findBySourceAndDestination(source, destination);
+//    }
+        @Override
+    public List<CruiseModel> searchCruises(String source, String destination,double startPrice,double endPrice) {
         // Implement the logic to search for cruises in the database
-        return cruiseRepository.findBySourceAndDestination(source, destination);
-    }
-    @Override
-    public List<CruiseModel> searchCruisesByPriceRange(double startPrice, double endPrice) {
-            return cruiseRepository.findByPriceBetween(startPrice,endPrice);
+        return cruiseRepository.findBySourceAndDestinationAndPriceBetween(source, destination,startPrice,endPrice);
     }
 
 //    @Override
-//    public int getLatestBookingId() {
-//        BookingModel latestBooking = bookRepository.findTopByOrderByBookingIdDesc();
-//        return (latestBooking != null && latestBooking.getBookingId() != null) ? Integer.parseInt(latestBooking.getBookingId()) : 0;
+//    public List<CruiseModel> searchCruisesByPriceRange(double startPrice, double endPrice) {
+//            return cruiseRepository.findByPriceBetween(startPrice,endPrice);
 //    }
+
     @Override
     public BookingModel createBookInfo(BookingModel bookingModel) {
         return bookRepository.save(bookingModel);

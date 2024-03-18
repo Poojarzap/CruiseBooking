@@ -7,39 +7,54 @@
 <body onload="checkPageLoad()">
 <h1>This is a page for User</h1>
 
-<button onclick="result1()">Search by source and destination</button>
-<button onclick="result2()">Search by price</button>
+<!--<button onclick="result1()">Search by source and destination</button>-->
+<!--<button onclick="result2()">Search by price</button>-->
+<button onclick="result1()">Search the source and destination</button>
 <button onclick="bookings()">My Bookings</button>
 
 
+
+<!--<div id="sdSearchDiv" style="display:none">-->
+<!--    <form id="search" action="/search" method="get">-->
+<!--        <label for="source">Source :</label>-->
+<!--        <input type="text" id="source" name="source" placeholder="Enter your source " required><br><br>-->
+<!--        <label for="destination">Destination : </label>-->
+<!--        <input type="text" id="destination" name="destination" placeholder="Enter your destination "/><br><br>-->
+<!--        <button type="submit">SEARCH</button><br><br>-->
+<!--    </form>-->
+<!--</div>-->
 
 <div id="sdSearchDiv" style="display:none">
     <form id="search" action="/search" method="get">
         <label for="source">Source :</label>
         <input type="text" id="source" name="source" placeholder="Enter your source " required><br><br>
-
         <label for="destination">Destination : </label>
         <input type="text" id="destination" name="destination" placeholder="Enter your destination "/><br><br>
-
-        <button type="submit">SEARCH</button><br><br>
-    </form>
-</div>
-
-<div id="priceDiv" style="display:none">
-    <form id="priceForm" action="/searchByPrice" method="get">
         <label for="startPrice">Start Price :</label>
         <input type="text" id="startPrice" name="startPrice" placeholder="Enter your start price range" required><br><br>
         <label for="endPrice">End Price : </label>
         <input type="text" id="endPrice" name="endPrice" placeholder="Enter your end price range"/><br><br>
         <button type="submit">SEARCH</button><br><br>
+
     </form>
 </div>
 
 
+<!--<div id="priceDiv" style="display:none">-->
+<!--    <form id="priceForm" action="/searchByPrice" method="get">-->
+<!--        <label for="startPrice">Start Price :</label>-->
+<!--        <input type="text" id="startPrice" name="startPrice" placeholder="Enter your start price range" required><br><br>-->
+<!--        <label for="endPrice">End Price : </label>-->
+<!--        <input type="text" id="endPrice" name="endPrice" placeholder="Enter your end price range"/><br><br>-->
+<!--        <button type="submit">SEARCH</button><br><br>-->
+<!--    </form>-->
+<!--</div>-->
+
+
 
 <br>
-
 <br>
+
 <div id="booksDiv" style="display:block">
 <!--        <p>Bookings :</p>-->
     <h3 id="bookingsHeading" style="display: none">Bookings : </h3>
@@ -93,21 +108,21 @@
     function result1(){
 
         document.getElementById("sdSearchDiv").style.display = "block";
-        document.getElementById("priceDiv").style.display = "none";
+<!--        document.getElementById("priceDiv").style.display = "none";-->
         document.getElementById("booksDiv").style.display = "none";
    }
-     function result2(){
+<!--     function result2(){-->
 
-        document.getElementById("sdSearchDiv").style.display = "none";
-        document.getElementById("priceDiv").style.display = "block";
-        document.getElementById("booksDiv").style.display = "none";
-   }
+<!--        document.getElementById("sdSearchDiv").style.display = "none";-->
+<!--        document.getElementById("priceDiv").style.display = "block";-->
+<!--        document.getElementById("booksDiv").style.display = "none";-->
+<!--   }-->
 
     function bookings() {
     window.location.href = "/bookings";
         setTimeOut(function(){
         document.getElementById("sdSearchDiv").style.display = "none";
-        document.getElementById("priceDiv").style.display = "none";
+<!--        document.getElementById("priceDiv").style.display = "none";-->
         document.getElementById("booksDiv").style.display = "block";
     },1000);
 }
@@ -118,11 +133,10 @@
         setTimeout(function(){
         alert("Deleted successfully");
          document.getElementById("sdSearchDiv").style.display = "none";
-        document.getElementById("priceDiv").style.display = "none";
+<!--        document.getElementById("priceDiv").style.display = "none";-->
         document.getElementById("booksDiv").style.display = "none";
         },1000);
       }
-
 
 </script>
 

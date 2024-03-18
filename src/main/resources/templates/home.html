@@ -12,7 +12,7 @@
     <button onclick="fetchAllBookings()">Fetch All Bookings</button>
 
     <div id="addCruiseForm" style="display:none;">
-        <h2>Add New Cruise Data</h2>
+        <h2 id="headingUpdate">Add New Cruise Data</h2>
         <form id="cruiseForm" action="/addCruise" method="post">
             <!-- Add input fields for cruise data -->
             <label for="cruiseId">Cruise Id:</label>
@@ -32,7 +32,7 @@
 
             <label for="price">Price:</label>
             <input type="text" id="price" name="price" required><br><br>
-            <button type="submit">Submit</button>
+            <button type="submit" id="buttonSubmit">Submit</button>
 
         </form>
     </div>
@@ -44,12 +44,24 @@
         </form>
     </div>
 
+
+
+
     <div id="fetchData">
-    <!-- Fetch Data-->
-    <ul th:each="cruise : ${cruiseList}">
-        <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}"></li><hr>
-    </ul>
+        <!-- Fetch Data-->
+        <ul th:each="cruise : ${cruiseList}">
+            <li th:text="'Id: ' + ${cruise.cruiseId} + ', Cruise Name: ' + ${cruise.cruiseName} + ', Ship Name: ' + ${cruise.shipName} + ', Source: ' + ${cruise.source} + ', Destination: ' + ${cruise.destination} + ', Price: ' + ${cruise.price}"></li>
+            <button th:attr="data-cruise-id=${cruise.cruiseId},
+                          data-cruise-name=${cruise.cruiseName},
+                          data-ship-name=${cruise.shipName},
+                          data-source=${cruise.source},
+                          data-destination=${cruise.destination},
+                          data-price=${cruise.price}"
+                    onclick="updateCruiseData(this)">UPDATE</button>
+            <hr>
+        </ul>
     </div>
+
 
     <div id="booksDiv" style="display:block">
         <!--        <p>Bookings :</p>-->
@@ -72,37 +84,120 @@
 <script>
     function addNewData(){
      document.getElementById("addCruiseForm").style.display = "block";
+      document.getElementById('cruiseId').value = "";
+      document.getElementById('cruiseId').disabled = false;
+    document.getElementById('cruiseName').value = "";
+    document.getElementById('shipName').value = "";
+    document.getElementById('source').value = "";
+    document.getElementById('destination').value = "";
+    document.getElementById('price').value = "";
      document.getElementById("fetchData").style.display = "none";
      document.getElementById("fetchCruise").style.display = "none";
+     document.getElementById("booksDiv").style.display = "none";
     }
 
     function fetchCruiseData() {
+     document.getElementById("addCruiseForm").style.display = "none";
+       document.getElementById("fetchData").style.display = "block";
+       document.getElementById("fetchCruise").style.display = "none";
+       document.getElementById("booksDiv").style.display = "none";
         window.location.href = "/getCruiseList";
     }
 
     function fetchCruiseDataById(){
        document.getElementById("addCruiseForm").style.display = "none";
        document.getElementById("fetchData").style.display = "none";
-     document.getElementById("fetchCruise").style.display = "block";
+       document.getElementById("fetchCruise").style.display = "block";
+       document.getElementById("booksDiv").style.display = "none";
     }
 
     function fetchAllBookings(){
-        window.location.href="/fetchBookings";
+      window.location.href="/fetchBookings";
     }
+
+function updateCruiseData(button) {
+    var cruiseId = button.getAttribute('data-cruise-id');
+    var cruiseName = button.getAttribute('data-cruise-name');
+    var shipName = button.getAttribute('data-ship-name');
+    var source = button.getAttribute('data-source');
+    var destination = button.getAttribute('data-destination');
+    var price = button.getAttribute('data-price');
+    console.log(cruiseId)
+    updateButtonText();
+
+    // Populate form fields with retrieved values
+    document.getElementById('cruiseId').value = cruiseId;
+    document.getElementById('cruiseName').value = cruiseName;
+    document.getElementById('shipName').value = shipName;
+    document.getElementById('source').value = source;
+    document.getElementById('destination').value = destination;
+    document.getElementById('price').value = price;
+
+    // Set form method to PUT
+    document.getElementById('cruiseForm').setAttribute('method', 'PUT');
+
+    // Display the form
+    document.getElementById('addCruiseForm').style.display = 'block';
+    document.getElementById("fetchData").style.display = "none";
+    document.getElementById("fetchCruise").style.display = "none";
+    document.getElementById("booksDiv").style.display = "none";
+}
+
+function updateButtonText() {
+    document.getElementById('headingUpdate').innerText = "Update Form";
+    document.getElementById('buttonSubmit').innerText = "Update";
+    document.getElementById('cruiseForm').setAttribute('action', '/updateCruise');
+    document.getElementById('cruiseId').disabled = true; // Keep cruiseId disabled
+}
+
+
+function submitForm() {
+console.log("gdjdscschsc");
+    document.getElementById('cruiseId').disabled = false;
+<!--    document.getElementById('cruiseForm').submit();-->
+
+
+   var form = document.getElementById('cruiseForm');
+    var formData = new FormData(form);
+
+    fetch(form.getAttribute('action'), {
+        method: 'PUT',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to update cruise data');
+        }
+        // Optionally, handle success response
+    })
+    .catch(error => {
+        console.error('Error updating cruise data:', error);
+    });
+}
+
+// Add event listener to the "Update" button
+    document.getElementById('buttonSubmit').addEventListener('click', function(event) {
+
+    event.preventDefault();
+
+    // Call the submitForm() function
+    submitForm();
+
+
+});
+
 
 </script>
 
-
-
-
-
-<!--<label for="CruiseLine">Choose a CruiseLine:</label>-->
-<!--<br>-->
-<!--<select name="CruiseLine" id="CruiseLine">-->
-<!--    <option value="volvo">Volvo</option>-->
-<!--    <option value="saab">Saab</option>-->
-<!--    <option value="mercedes">Mercedes</option>-->
-<!--    <option value="audi">Audi</option>-->
-<!--</select>-->
 </body>
 </html>
+
+<!--    <div id="fetchData">-->
+<!--    &lt;!&ndash; Fetch Data&ndash;&gt;-->
+<!--    <ul th:each="cruise : ${cruiseList}">-->
+<!--        <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}"></li>-->
+<!--        <button th:attr="onclick='updateCruiseData(\'' + ${cruise.cruiseId} + '\')'">UPDATE</button>-->
+
+<!--        <hr>-->
+<!--    </ul>-->
+<!--    </div>-->

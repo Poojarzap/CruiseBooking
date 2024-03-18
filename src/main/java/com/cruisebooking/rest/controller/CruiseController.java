@@ -92,16 +92,6 @@ public class CruiseController {
         return modelAndView;
     }
 
-//    @GetMapping("{cruiseId}")
-//    public CruiseModel getCruiseInfo(@PathVariable("cruiseId") String id) {
-//        return cruiseServiceInterface.getCruiseInfo(id);
-//    }
-
-//    @PostMapping
-//    public String createCruise(@RequestBody CruiseModel cruiseModel) {
-//        cruiseServiceInterface.createCruiseInfo(cruiseModel);
-//        return "Successfull";
-//    }
 
     @GetMapping("/home")
     public ModelAndView home() {
@@ -128,19 +118,32 @@ public class CruiseController {
         return modelAndView;
     }
 
+    @PutMapping("/updateCruise")
+    public void updateCruiseData(@ModelAttribute CruiseModel cruiseModel)
+    {
+        System.out.println(cruiseModel.getCruiseId());
+        cruiseServiceInterface.updateCruieData(cruiseModel);
+
+   }
 
 
-//    @GetMapping("/userHome")
-//    public ModelAndView userHome() {
+//    @GetMapping("/search")
+//    public ModelAndView detailsofShip(@RequestParam String source,@RequestParam String destination){
+//        List<CruiseModel> searchResults = cruiseServiceInterface.searchCruises(source, destination);
+//        // Create a ModelAndView and add the search results to it
 //        ModelAndView modelAndView = new ModelAndView();
 //        modelAndView.setViewName("userHome");
-////        System.out.println(user.getName()+"-------");
+//        System.out.println(user.getName());
+//        modelAndView.addObject("searchResults", searchResults);
+//        modelAndView.addObject("userInfo",user);
+//        modelAndView.addObject("bookingModel", new BookingModel());
 //        return modelAndView;
 //    }
 
     @GetMapping("/search")
-    public ModelAndView detailsofShip(@RequestParam String source,@RequestParam String destination){
-        List<CruiseModel> searchResults = cruiseServiceInterface.searchCruises(source, destination);
+    public ModelAndView detailsofShip(@RequestParam String source,@RequestParam String destination,@RequestParam double startPrice,@RequestParam double endPrice){
+        List<CruiseModel> searchResults = cruiseServiceInterface.searchCruises(source, destination,startPrice,endPrice);
+        System.out.println(searchResults);
         // Create a ModelAndView and add the search results to it
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("userHome");
@@ -151,18 +154,18 @@ public class CruiseController {
         return modelAndView;
     }
 
-    @GetMapping("/searchByPrice")
-    public ModelAndView searchByPrice(@RequestParam double startPrice,@RequestParam double endPrice) {
-        List<CruiseModel> searchResults= cruiseServiceInterface.searchCruisesByPriceRange(startPrice,endPrice);
-        System.out.println(searchResults);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("userHome");
-        System.out.println(user.getName());
-        modelAndView.addObject("searchResults", searchResults);
-        modelAndView.addObject("userInfo",user);
-        modelAndView.addObject("bookingModel", new BookingModel());
-        return modelAndView;
-    }
+//    @GetMapping("/searchByPrice")
+//    public ModelAndView searchByPrice(@RequestParam double startPrice,@RequestParam double endPrice) {
+//        List<CruiseModel> searchResults= cruiseServiceInterface.searchCruisesByPriceRange(startPrice,endPrice);
+//        System.out.println(searchResults);
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("userHome");
+//        System.out.println(user.getName());
+//        modelAndView.addObject("searchResults", searchResults);
+//        modelAndView.addObject("userInfo",user);
+//        modelAndView.addObject("bookingModel", new BookingModel());
+//        return modelAndView;
+//    }
 
     @PostMapping("/bookCruise")
     public ModelAndView bookCruise(@ModelAttribute BookingModel bookingModel) {

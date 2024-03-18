@@ -23,7 +23,6 @@ public class BookingModel {
         this.bookingCruise = bookingCruise;
     }
 
-
     public String getBookingId() {
         return bookingId;
     }

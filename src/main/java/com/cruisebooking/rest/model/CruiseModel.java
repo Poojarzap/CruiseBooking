@@ -20,13 +20,7 @@ public class CruiseModel {
     public CruiseModel() {
     }
 
-    public String getDestination() {
-        return destination;
-    }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
 
 
     public CruiseModel(String cruiseId, String cruiseName, String shipName,String source,String destination,double price) {
@@ -69,6 +63,14 @@ public class CruiseModel {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
     public double getPrice() {
         return price;

@@ -12,13 +12,14 @@ public interface CruiseServiceInterface {
     //public CruiseModel getCruiseInfo(String id);
     public CruiseModel createCruiseInfo(CruiseModel cd);
     public CruiseModel findCruiseById(String cruiseId);
+    public void updateCruieData(CruiseModel cd);
 
 
     //User Implementations
     public UserModel createUserInfo(UserModel userInfo);
     public UserModel findUserFromDb(String userPhone);
-    List<CruiseModel> searchCruises(String source, String destination);
-    List<CruiseModel> searchCruisesByPriceRange(double startPrice, double endPrice);
+    List<CruiseModel> searchCruises(String source,String destination,double startPrice,double endPrice);
+    //List<CruiseModel> searchCruisesByPriceRange(double startPrice, double endPrice);
 
 
 
