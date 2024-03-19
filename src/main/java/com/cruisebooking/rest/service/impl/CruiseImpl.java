@@ -88,6 +88,11 @@ public class CruiseImpl implements CruiseServiceInterface {
     }
 
     @Override
+    public BookingModel findBookingById(String bookingId) {
+        return bookRepository.findById(bookingId).get();
+    }
+
+    @Override
     public Boolean cancelBookingById(String bookingId) {
         bookRepository.deleteById(bookingId);
         return true;

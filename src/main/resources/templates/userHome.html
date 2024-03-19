@@ -70,7 +70,8 @@
             <p><strong>Source-Destination:</strong> <span th:text="${result.cruiseModel.source+ '-' +result.cruiseModel.destination}"></span></p>
             <p><strong>Price:</strong> <span th:text="${result.cruiseModel.price}"></span></p>
             <p><strong>Total_seats_Booked:</strong> <span th:text="${result.bookingModel.numberOfSeats}"></span></p>
-            <button th:attr="onclick='cancelBooking(\'' + ${result.bookingModel.bookingId} + '\')'">Cancel</button>
+<!--            <button th:attr="onclick='cancelBooking(\'' + ${result.bookingModel.bookingId} + '\')'">Cancel</button>-->
+            <button th:attr="onclick='cancelBooking(\'' + ${result.bookingModel.bookingId} + '\', \'' + ${result.bookingModel.numberOfSeats} + '\')'">Cancel</button>
             <hr>
         </li>
     </ul>
@@ -150,10 +151,14 @@
 
 
 
-    function cancelBooking(bookingId) {
-        fetch('/cancel-booking/' + bookingId, {
-            method: 'DELETE'
-        });
+    function cancelBooking(bookingId,numberOfSeats) {
+<!--        fetch('/cancel-booking/' + bookingId , {-->
+<!--            method: 'DELETE'-->
+<!--        });-->
+
+fetch(`/cancel-booking/${bookingId}/${numberOfSeats}`, {
+        method: 'DELETE'
+    })
         setTimeout(function(){
         alert("Deleted successfully");
          document.getElementById("sdSearchDiv").style.display = "none";

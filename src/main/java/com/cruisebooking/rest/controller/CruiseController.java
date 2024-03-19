@@ -276,8 +276,6 @@ public class CruiseController {
 
 
 
-
-
     @GetMapping("/bookings")
     public ModelAndView bookingResult(){
 //        String bookingUser= user.getUserPhone();
@@ -368,9 +366,16 @@ public class CruiseController {
     }
 
 
-    @DeleteMapping("/cancel-booking/{bookingId}")
-    public ModelAndView cancelBooking(@PathVariable("bookingId") String bookingId) {
+    @DeleteMapping("/cancel-booking/{bookingId}/{numberOfSeats}")
+    public ModelAndView cancelBooking(@PathVariable("bookingId") String bookingId,@PathVariable("numberOfSeats") String numberOfSeats) {
         System.out.println(bookingId);
+        System.out.println(numberOfSeats);
+        BookingModel bd=cruiseServiceInterface.findBookingById(bookingId);
+        CruiseModel cd=cruiseServiceInterface.findCruiseById(bd.getBookingCruise());
+        int availableSeats=cd.getAvailableSeats();
+        int seatsAfterCancel= availableSeats+Integer.parseInt(numberOfSeats);
+        cd.setAvailableSeats(seatsAfterCancel);
+        cruiseServiceInterface.updateCruieData(cd);
         cruiseServiceInterface.cancelBookingById(bookingId);
         ModelAndView modelAndView=new ModelAndView();
         modelAndView.setViewName("userHome");
