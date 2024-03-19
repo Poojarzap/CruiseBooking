@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>
+    <span th:text="${cruise}"></span>
+</p>
+<!--<div id="booksDiv" style="display:block">-->
+<!--    &lt;!&ndash;        <p>Bookings :</p>&ndash;&gt;-->
+<!--    <ul>-->
+<!--        <li th:each="result : ${combinedProject}">-->
+<!--            <p><strong>Booking ID:</strong> <span th:text="${result.bookingModel.bookingId}"></span></p>-->
+<!--            <p><strong>User Phone:</strong> <span th:text="${result.userModel.userPhone}"></span></p>-->
+<!--            <p><strong>Cruise Name:</strong> <span th:text="${result.cruiseModel.cruiseName}"></span></p>-->
+<!--            <p><strong>Ship Name:</strong> <span th:text="${result.cruiseModel.shipName}"></span></p>-->
+<!--            <p><strong>Source-Destination:</strong> <span th:text="${result.cruiseModel.source+ '-' +result.cruiseModel.destination}"></span></p>-->
+<!--            <p><strong>Price:</strong> <span th:text="${result.cruiseModel.price}"></span></p>-->
+<!--            <button th:attr="onclick='cancelBooking(\'' + ${result.bookingModel.bookingId} + '\')'">Cancel</button>-->
+<!--            <hr>-->
+<!--        </li>-->
+<!--    </ul>-->
+
+<!--</div>-->
+
+<form name="saveBooking" th:action="@{/bookCruise}" method="post" th:object="${bookingModel}">
+                <input type="hidden" name="bookingUser" th:value="${userInfo}">
+                <input type="hidden" name="bookingCruise" th:value="${cruise}">
+                <input type="text" name="numberOfSeats" id="seats" required><br><br>
+                <button type="submit" style="color:red">BOOK</button>
+</form>
+</body>
+</html>

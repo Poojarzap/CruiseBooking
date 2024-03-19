@@ -9,6 +9,7 @@
 
 <!--<button onclick="result1()">Search by source and destination</button>-->
 <!--<button onclick="result2()">Search by price</button>-->
+<button onclick="allCruise()">All cruise</button>
 <button onclick="result1()">Search the source and destination</button>
 <button onclick="bookings()">My Bookings</button>
 
@@ -23,6 +24,8 @@
 <!--        <button type="submit">SEARCH</button><br><br>-->
 <!--    </form>-->
 <!--</div>-->
+
+
 
 <div id="sdSearchDiv" style="display:none">
     <form id="search" action="/search" method="get">
@@ -50,8 +53,6 @@
 <!--    </form>-->
 <!--</div>-->
 
-
-
 <br>
 <br>
 
@@ -61,15 +62,14 @@
     <ul>
 <!--        <li th:each="result : ${combinedProject}" th:text="${result} + '\n'"></li>-->
         <li th:each="result : ${combinedProject}">
-            <script th:inline="javascript">
-                var bookingIdVar = /*[[${result.bookingModel.bookingId}]]*/ '';
-            </script>
+
             <p><strong>Booking ID:</strong> <span th:text="${result.bookingModel.bookingId}"></span></p>
             <p><strong>User Phone:</strong> <span th:text="${result.userModel.userPhone}"></span></p>
             <p><strong>Cruise Name:</strong> <span th:text="${result.cruiseModel.cruiseName}"></span></p>
             <p><strong>Ship Name:</strong> <span th:text="${result.cruiseModel.shipName}"></span></p>
             <p><strong>Source-Destination:</strong> <span th:text="${result.cruiseModel.source+ '-' +result.cruiseModel.destination}"></span></p>
             <p><strong>Price:</strong> <span th:text="${result.cruiseModel.price}"></span></p>
+            <p><strong>Total_seats_Booked:</strong> <span th:text="${result.bookingModel.numberOfSeats}"></span></p>
             <button th:attr="onclick='cancelBooking(\'' + ${result.bookingModel.bookingId} + '\')'">Cancel</button>
             <hr>
         </li>
@@ -81,22 +81,33 @@
 
 <div id="searchResultDiv">
     <ul th:each="cruise : ${searchResults}">
-        <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}"></li>
-
+        <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}+ ', Total seats: ' + ${cruise.totalSeats} + ', Available seats: ' + ${cruise.availableSeats}"></li>
 <!--        <p th:text="'User: ' + ${userInfo.userName}"></p>-->
-        <!-- Wrap the details and button inside a form -->
-        <form th:action="@{/bookCruise}" method="post" th:object="${bookingModel}">
-            <input type="hidden" name="bookingUser" th:value="${userInfo.userPhone}">
-            <input type="hidden" name="bookingCruise" th:value="${cruise.cruiseId}">
-            <button type="submit" style="color:red">BOOK</button>
+
+
+        <form name="saveBooking" th:action="@{/bookSeats}" method="post">
+                        <input type="hidden" name="userPhone" th:value="${userInfo.userPhone}">
+                        <input type="hidden" name="cruiseId" th:value="${cruise.cruiseId}">
+                        <button type="submit" style="color:red">BOOK</button>
         </form>
 
         <hr>
     </ul>
 </div>
 
+<script th:inline="javascript">
+    /*<![CDATA[*/
+        var showAlert = /*[[${showAlert}]]*/ false;
+        var message = /*[[${message}]]*/ "";
+
+        if (showAlert) {
+            alert(message);
+        }
+    /*]]>*/
+</script>
 
 <script>
+
     function checkPageLoad() {
         // Check if the current URL includes "/bookings"
         if (window.location.href.includes("/bookings")) {
@@ -105,18 +116,28 @@
         }
     }
 
-    function result1(){
+    function allCruise(){
+        window.location.href="/searchAll";
+    }
 
+
+
+    function result1(){
         document.getElementById("sdSearchDiv").style.display = "block";
-<!--        document.getElementById("priceDiv").style.display = "none";-->
+         document.getElementById("searchResultDiv").style.display = "none";
         document.getElementById("booksDiv").style.display = "none";
    }
-<!--     function result2(){-->
 
+
+
+<!--     function result2(){-->
 <!--        document.getElementById("sdSearchDiv").style.display = "none";-->
 <!--        document.getElementById("priceDiv").style.display = "block";-->
 <!--        document.getElementById("booksDiv").style.display = "none";-->
 <!--   }-->
+
+
+
 
     function bookings() {
     window.location.href = "/bookings";
@@ -126,6 +147,9 @@
         document.getElementById("booksDiv").style.display = "block";
     },1000);
 }
+
+
+
     function cancelBooking(bookingId) {
         fetch('/cancel-booking/' + bookingId, {
             method: 'DELETE'
@@ -143,4 +167,11 @@
 
 
 </body>
+
 </html>
+
+<!--        <form name="saveBooking" th:action="@{/bookCruise}" method="post" th:object="${bookingModel}">-->
+<!--            <input type="hidden" name="bookingUser" th:value="${userInfo.userPhone}">-->
+<!--            <input type="hidden" name="bookingCruise" th:value="${cruise.cruiseId}">-->
+<!--            <button type="submit" style="color:red">BOOK</button>-->
+<!--        </form>-->

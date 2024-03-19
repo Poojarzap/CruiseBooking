@@ -12,15 +12,17 @@ public class BookingModel {
     private String bookingId; // Use int for auto-incrementing ID
     private String bookingUser;
     private String bookingCruise;
+    private int numberOfSeats;
 
 
     public BookingModel() {
     }
 
-    public BookingModel(String bookingId, String bookingUser, String bookingCruise) {
+    public BookingModel(String bookingId, String bookingUser, String bookingCruise,int numberOfSeats) {
         this.bookingId = bookingId;
         this.bookingUser = bookingUser;
         this.bookingCruise = bookingCruise;
+        this.numberOfSeats=numberOfSeats;
     }
 
     public String getBookingId() {
@@ -46,6 +48,13 @@ public class BookingModel {
 
     public void setBookingCruise(String bookingCruise) {
         this.bookingCruise = bookingCruise;
+    }
+    public int getNumberOfSeats() {
+        return numberOfSeats;
+    }
+
+    public void setNumberOfSeats(int numberOfSeats) {
+        this.numberOfSeats = numberOfSeats;
     }
 
 

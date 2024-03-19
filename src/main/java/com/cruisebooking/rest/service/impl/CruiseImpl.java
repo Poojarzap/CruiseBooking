@@ -44,6 +44,8 @@ public class CruiseImpl implements CruiseServiceInterface {
     }
 
 
+
+
     @Override
     public UserModel createUserInfo(UserModel userInfo) {
         return userRepository.save(userInfo);

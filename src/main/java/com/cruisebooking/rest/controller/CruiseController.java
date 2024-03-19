@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import java.util.Map;
 
 public class CruiseController {
     public static UserModel user;
+
     @Autowired
     private MongoTemplate mongoTemplate;
     @Value("${authentication.phoneNumber}")
@@ -109,7 +111,7 @@ public class CruiseController {
         modelAndView.addObject("cruiseList", cruiseList);
         return modelAndView;
     }
-    @GetMapping("/getCruiseList")
+    @GetMapping("/getCruiseList") //For staff
     public ModelAndView getCruiseList() {
         List<CruiseModel> cruiseList = cruiseServiceInterface.getCruiseList();
         ModelAndView modelAndView = new ModelAndView();
@@ -117,6 +119,15 @@ public class CruiseController {
         modelAndView.addObject("cruiseList", cruiseList);
         return modelAndView;
     }
+    @GetMapping("/getAllCruiseList") //For users
+    public ModelAndView getAllCruiseList() {
+        List<CruiseModel> cruiseList = cruiseServiceInterface.getCruiseList();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("userHome");
+        modelAndView.addObject("searchResults", cruiseList);
+        return modelAndView;
+    }
+
 
     @PutMapping("/updateCruise")
     public ModelAndView updateCruiseData(@ModelAttribute CruiseModel cruiseModel)
@@ -129,18 +140,18 @@ public class CruiseController {
    }
 
 
-//    @GetMapping("/search")
-//    public ModelAndView detailsofShip(@RequestParam String source,@RequestParam String destination){
-//        List<CruiseModel> searchResults = cruiseServiceInterface.searchCruises(source, destination);
-//        // Create a ModelAndView and add the search results to it
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("userHome");
-//        System.out.println(user.getName());
-//        modelAndView.addObject("searchResults", searchResults);
-//        modelAndView.addObject("userInfo",user);
-//        modelAndView.addObject("bookingModel", new BookingModel());
-//        return modelAndView;
-//    }
+    @GetMapping("/searchAll")
+    public ModelAndView detailsofShip(){
+        List<CruiseModel> searchResults = cruiseServiceInterface.getCruiseList();
+        // Create a ModelAndView and add the search results to it
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("userHome");
+        System.out.println(user.getName());
+        modelAndView.addObject("searchResults", searchResults);
+        modelAndView.addObject("userInfo",user);
+        modelAndView.addObject("bookingModel", new BookingModel());
+        return modelAndView;
+    }
 
     @GetMapping("/search")
     public ModelAndView detailsofShip(@RequestParam String source,@RequestParam String destination,@RequestParam double startPrice,@RequestParam double endPrice){
@@ -169,16 +180,89 @@ public class CruiseController {
 //        return modelAndView;
 //    }
 
+    @PostMapping("/bookSeats")
+    public ModelAndView bookSeats(@RequestParam String userPhone,@RequestParam String cruiseId) {
+        System.out.println(userPhone);
+        System.out.println(cruiseId);
+        // Assuming you have a method to retrieve the booking model
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("bookingModel", new BookingModel());
+        modelAndView.addObject("userInfo", userPhone); // Assuming you have a method to retrieve user info
+        modelAndView.addObject("cruise",cruiseId); // Assuming you have a method to retrieve cruise info
+        modelAndView.setViewName("BookSeats"); // Assuming "BookSeats" is your Thymeleaf template name
+        return modelAndView;
+    }
+
+
+
+//    @PostMapping("/bookCruise")
+//    public ModelAndView bookCruise(@ModelAttribute BookingModel bookingModel) {
+//        System.out.println(bookingModel.getNumberOfSeats()); //Print number of seats requested
+//        CruiseModel cd=cruiseServiceInterface.findCruiseById(bookingModel.getBookingCruise());
+//        int available=cd.getAvailableSeats();
+//        System.out.println(available);
+//        ModelAndView modelAndView = new ModelAndView();
+//        if(available<bookingModel.getNumberOfSeats())
+//        {
+//            modelAndView.addObject("errorMessage", "No enough seats");
+//            modelAndView.addObject("showAlert", true);
+//            modelAndView.setViewName("userHome");
+//        }
+//        else {
+//            int generatedBookingId = generateBookingId();
+//            bookingModel.setBookingId(String.valueOf(generatedBookingId));
+//            // Save the booking details to the database
+//            cruiseServiceInterface.createBookInfo(bookingModel);
+//            int newAvailable=available-bookingModel.getNumberOfSeats();
+//            modelAndView.addObject("errorMessage", "Booking Successfull");
+//            modelAndView.addObject("showAlert", true);
+//            modelAndView.setViewName("userHome");
+//        }
+//
+//        return modelAndView;
+//    }
+
     @PostMapping("/bookCruise")
     public ModelAndView bookCruise(@ModelAttribute BookingModel bookingModel) {
+        int requestedSeats = bookingModel.getNumberOfSeats();
+        CruiseModel cruise = cruiseServiceInterface.findCruiseById(bookingModel.getBookingCruise());
+
+        if (cruise == null) {
+            // Handle the case where the cruise is not found
+            ModelAndView modelAndView = new ModelAndView("userHome");
+            modelAndView.addObject("message", "Cruise not found");
+            modelAndView.addObject("showAlert", true);
+            return modelAndView;
+        }
+
+        int availableSeats = cruise.getAvailableSeats();
+        if (availableSeats < requestedSeats) {
+            // Not enough available seats
+            ModelAndView modelAndView = new ModelAndView("userHome");
+            modelAndView.addObject("message", "Not enough seats available");
+            modelAndView.addObject("showAlert", true);
+            return modelAndView;
+        }
+
+        // Sufficient seats available, proceed with booking
         int generatedBookingId = generateBookingId();
         bookingModel.setBookingId(String.valueOf(generatedBookingId));
+
+        // Update available seats count
+        int newAvailableSeats = availableSeats - bookingModel.getNumberOfSeats();
+        cruise.setAvailableSeats(newAvailableSeats);
+        // Save updated cruise details
+        cruiseServiceInterface.updateCruieData(cruise);
+
         // Save the booking details to the database
         cruiseServiceInterface.createBookInfo(bookingModel);
-        ModelAndView md = new ModelAndView();
-        md.setViewName("userHome");
-        return md;
+
+        ModelAndView modelAndView = new ModelAndView("userHome");
+        modelAndView.addObject("message", "Booking successful");
+        modelAndView.addObject("showAlert", true);
+        return modelAndView;
     }
+
 
     private int generateBookingId() {
         // Use MongoDB's findAndModify to atomically increment the booking ID
@@ -189,6 +273,9 @@ public class CruiseController {
         BookingIdCounter counter = mongoTemplate.findAndModify(query, update, options, BookingIdCounter.class);
         return counter.getSequence();
     }
+
+
+
 
 
     @GetMapping("/bookings")

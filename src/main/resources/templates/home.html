@@ -32,6 +32,13 @@
 
             <label for="price">Price:</label>
             <input type="text" id="price" name="price" required><br><br>
+
+            <label for="totalSeats">Total seats :</label>
+            <input type="text" id="totalSeats" name="totalSeats" required><br><br>
+
+            <label for="availableSeats">Available seats:</label>
+            <input type="text" id="availableSeats" name="availableSeats" required><br><br>
+
             <button type="submit" id="buttonSubmit">Submit</button>
 
         </form>
@@ -48,13 +55,15 @@
     <div id="fetchData">
         <!-- Fetch Data-->
         <ul th:each="cruise : ${cruiseList}">
-            <li th:text="'Id: ' + ${cruise.cruiseId} + ', Cruise Name: ' + ${cruise.cruiseName} + ', Ship Name: ' + ${cruise.shipName} + ', Source: ' + ${cruise.source} + ', Destination: ' + ${cruise.destination} + ', Price: ' + ${cruise.price}"></li>
+            <li th:text="'Id: ' + ${cruise.cruiseId} + ', Cruise Name: ' + ${cruise.cruiseName} + ', Ship Name: ' + ${cruise.shipName} + ', Source: ' + ${cruise.source} + ', Destination: ' + ${cruise.destination} + ', Price: ' + ${cruise.price} + ', Total seats: ' + ${cruise.totalSeats} + ', Available seats: ' + ${cruise.availableSeats}"></li>
             <button th:attr="data-cruise-id=${cruise.cruiseId},
                           data-cruise-name=${cruise.cruiseName},
                           data-ship-name=${cruise.shipName},
                           data-source=${cruise.source},
                           data-destination=${cruise.destination},
-                          data-price=${cruise.price}"
+                          data-price=${cruise.price},
+                          data-total-seats=${cruise.totalSeats},
+                          data-available-seats=${cruise.availableSeats}"
                     onclick="updateCruiseData(this)">UPDATE</button>
             <hr>
         </ul>
@@ -72,6 +81,8 @@
                 <p><strong>Ship Name:</strong> <span th:text="${result.cruiseModel.shipName}"></span></p>
                 <p><strong>Source-Destination:</strong> <span th:text="${result.cruiseModel.source+ '-' +result.cruiseModel.destination}"></span></p>
                 <p><strong>Price:</strong> <span th:text="${result.cruiseModel.price}"></span></p>
+                <p><strong>Total_seats_Booked:</strong> <span th:text="${result.bookingModel.numberOfSeats}"></span></p>
+
                 <hr>
             </li>
         </ul>
@@ -111,7 +122,7 @@
     function fetchAllBookings(){
       window.location.href="/fetchBookings";
     }
-l
+
 function updateCruiseData(button) {
     var cruiseId = button.getAttribute('data-cruise-id');
     var cruiseName = button.getAttribute('data-cruise-name');
@@ -119,6 +130,8 @@ function updateCruiseData(button) {
     var source = button.getAttribute('data-source');
     var destination = button.getAttribute('data-destination');
     var price = button.getAttribute('data-price');
+    var totalSeats = button.getAttribute('data-total-seats');
+    var availableSeats = button.getAttribute('data-available-seats');
 
     // Populate form fields with retrieved values
     document.getElementById('cruiseId').value = cruiseId;
@@ -127,6 +140,8 @@ function updateCruiseData(button) {
     document.getElementById('source').value = source;
     document.getElementById('destination').value = destination;
     document.getElementById('price').value = price;
+    document.getElementById('totalSeats').value = totalSeats;
+    document.getElementById('availableSeats').value = availableSeats;
 
     // Display the form
     document.getElementById('addCruiseForm').style.display = 'block';
@@ -164,21 +179,50 @@ function submitForm() {
 
 
 
-// Add event listener to the "Update" button
-    document.getElementById('buttonSubmit').addEventListener('click', function(event) {
+<!--// Add event listener to the "Update" button-->
+<!--    document.getElementById('buttonSubmit').addEventListener('click', function(event) {-->
+<!--    // Check if the ID is 'buttonSubmit'-->
+<!--    if (this.id === 'buttonSubmit') {-->
+<!--       fetch(form.getAttribute('action'), {-->
+<!--        method: 'POST',-->
+<!--    })-->
+<!--    }-->
+<!--    else-->
+<!--    {-->
+<!--    document.getElementById('cruiseForm').setAttribute('action', '/updateCruise');-->
+<!--     // Call the submitForm() function-->
+<!--        event.preventDefault();-->
+<!--        submitForm();-->
+<!--    setTimeout(function(){-->
+<!--        alert("updated successfully");-->
+<!--         document.getElementById('addCruiseForm').style.display = 'none';-->
+<!--    document.getElementById("fetchData").style.display = "none";-->
+<!--    document.getElementById("fetchCruise").style.display = "none";-->
+<!--    document.getElementById("booksDiv").style.display = "none";-->
+<!--        },1000);-->
+<!--      }-->
+
+<!--    });-->
+
+
+    // Add event listener to the "Update" button
+document.getElementById('buttonSubmit').addEventListener('click', function(event) {
     // Check if the ID is 'buttonSubmit'
     if (this.id === 'buttonSubmit') {
-       fetch(form.getAttribute('action'), {
-        method: 'POST',
-    })
+        // If it is, submit the form using the default method (POST)
+        return;
     }
-    else
-    {
+
+    // Otherwise, it's an update action
+    console.log('Updating cruise data...');
     document.getElementById('cruiseId').disabled = false;
-    document.getElementById('cruiseForm').setAttribute('action', '/updateCruise');
-     // Call the submitForm() function
-        event.preventDefault();
-        submitForm();
+    document.getElementById('cruiseForm').setAttribute('method', 'PUT'); // Change method to PUT
+    event.preventDefault(); // Prevent the default form submission
+
+    // Call the submitForm() function
+    submitForm();
+
+
     setTimeout(function(){
         alert("updated successfully");
          document.getElementById('addCruiseForm').style.display = 'none';
@@ -186,9 +230,9 @@ function submitForm() {
     document.getElementById("fetchCruise").style.display = "none";
     document.getElementById("booksDiv").style.display = "none";
         },1000);
-      }
+});
 
-    });
+
 
 
 

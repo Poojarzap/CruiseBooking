@@ -14,22 +14,21 @@ public class CruiseModel {
     private String shipName;
     private String source;
     private String destination;
-
     private double price;
+    private int totalSeats;
+    private int availableSeats;
 
     public CruiseModel() {
     }
-
-
-
-
-    public CruiseModel(String cruiseId, String cruiseName, String shipName,String source,String destination,double price) {
+    public CruiseModel(String cruiseId, String cruiseName, String shipName,String source,String destination,double price,int totalSeats,int availableSeats) {
         this.cruiseId = cruiseId;
         this.cruiseName = cruiseName;
         this.shipName = shipName;
         this.source=source;
         this.destination=destination;
         this.price=price;
+        this.totalSeats=totalSeats;
+        this.availableSeats=availableSeats;
     }
 
     public String getCruiseId() {
@@ -79,5 +78,11 @@ public class CruiseModel {
     public void setPrice(double price) {
         this.price = price;
     }
+    public int getTotalSeats() { return totalSeats; }
+    public void setTotalSeats(int totalSeats) { this.totalSeats = totalSeats; }
+
+    public int getAvailableSeats() { return availableSeats; }
+
+    public void setAvailableSeats(int availableSeats)  { this.availableSeats = availableSeats;}
 
 }
