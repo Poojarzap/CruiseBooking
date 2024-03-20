@@ -21,10 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 
@@ -67,22 +64,40 @@ public class CruiseController {
         }
         return modelAndView;
     }
-
     @PostMapping("/userRegister")
     public ModelAndView userRegister(@ModelAttribute UserModel userModel) {
         ModelAndView modelAndView = new ModelAndView();
         // Check if the phone number already exists in the database
-        UserModel user = cruiseServiceInterface.findUserFromDb(userModel.getUserPhone());
-        if (user != null) {
-            modelAndView.setViewName("index");
-            modelAndView.addObject("errorMessage", "Phone number already exists. Please enter a different phone number.");
-            modelAndView.addObject("showAlert", true);
-        } else {
-            cruiseServiceInterface.createUserInfo(userModel);
-            modelAndView.setViewName("index");
+
+        try {
+            UserModel user = cruiseServiceInterface.findUserFromDb(userModel.getUserPhone());
+                modelAndView.setViewName("index");
+                modelAndView.addObject("errorMessage", "Phone number already exists. Please enter a different phone number.");
+                modelAndView.addObject("showAlert", true);
+            } catch (NoSuchElementException e) {
+        cruiseServiceInterface.createUserInfo(userModel);
+        modelAndView.setViewName("index");
         }
         return modelAndView;
     }
+
+
+
+//    @PostMapping("/userRegister")
+//    public ModelAndView userRegister(@ModelAttribute UserModel userModel) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        // Check if the phone number already exists in the database
+//        UserModel user = cruiseServiceInterface.findUserFromDb(userModel.getUserPhone());
+//        if (user != null) {
+//            modelAndView.setViewName("index");
+//            modelAndView.addObject("errorMessage", "Phone number already exists. Please enter a different phone number.");
+//            modelAndView.addObject("showAlert", true);
+//        } else {
+//            cruiseServiceInterface.createUserInfo(userModel);
+//            modelAndView.setViewName("index");
+//        }
+//        return modelAndView;
+//    }
 
     @GetMapping("/fetchCruiseDataById")
     public ModelAndView fetchCruise(@RequestParam String cruiseId){
