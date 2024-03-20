@@ -108,9 +108,12 @@ public class CruiseController {
         List<CruiseModel> cruiseList = cruiseServiceInterface.getCruiseList();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home");
+        modelAndView.addObject("message", "Added Successfully");
+        modelAndView.addObject("showAlert", true);
         modelAndView.addObject("cruiseList", cruiseList);
         return modelAndView;
     }
+
     @GetMapping("/getCruiseList") //For staff
     public ModelAndView getCruiseList() {
         List<CruiseModel> cruiseList = cruiseServiceInterface.getCruiseList();
@@ -382,8 +385,5 @@ public class CruiseController {
         return modelAndView;
 
     }
-
-
-
 
 }

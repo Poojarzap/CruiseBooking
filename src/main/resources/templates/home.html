@@ -99,6 +99,8 @@
     document.getElementById('source').value = "";
     document.getElementById('destination').value = "";
     document.getElementById('price').value = "";
+    document.getElementById('totalSeats').value = "";
+    document.getElementById('availableSeats').value = "";
      document.getElementById("fetchData").style.display = "none";
      document.getElementById("fetchCruise").style.display = "none";
      document.getElementById("booksDiv").style.display = "none";
@@ -231,13 +233,18 @@ document.getElementById('buttonSubmit').addEventListener('click', function(event
     document.getElementById("booksDiv").style.display = "none";
         },1000);
 });
-
-
-
-
-
-
 </script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+            var showAlert = /*[[${showAlert}]]*/ false;
+            var message = /*[[${message}]]*/ "";
+
+            if (showAlert) {
+                alert(message);
+            }
+        /*]]>*/
+    </script>
 
 </body>
 </html>
