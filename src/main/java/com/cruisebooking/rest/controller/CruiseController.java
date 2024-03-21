@@ -68,7 +68,6 @@ public class CruiseController {
     public ModelAndView userRegister(@ModelAttribute UserModel userModel) {
         ModelAndView modelAndView = new ModelAndView();
         // Check if the phone number already exists in the database
-
         try {
             UserModel user = cruiseServiceInterface.findUserFromDb(userModel.getUserPhone());
                 modelAndView.setViewName("index");
@@ -99,33 +98,10 @@ public class CruiseController {
 //        return modelAndView;
 //    }
 
-    @GetMapping("/fetchCruiseDataById")
-    public ModelAndView fetchCruise(@RequestParam String cruiseId){
-        CruiseModel cd=cruiseServiceInterface.findCruiseById(cruiseId);
-        System.out.println(cd);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("cruiseList",cd);
-        modelAndView.setViewName("home");
-        return modelAndView;
-    }
-
-
     @GetMapping("/home")
     public ModelAndView home() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("home");
-        return modelAndView;
-    }
-
-    @PostMapping("/addCruise")
-    public ModelAndView addCruise(@ModelAttribute CruiseModel cruiseModel) {
-        cruiseServiceInterface.createCruiseInfo(cruiseModel);
-        List<CruiseModel> cruiseList = cruiseServiceInterface.getCruiseList();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("home");
-        modelAndView.addObject("message", "Added Successfully");
-        modelAndView.addObject("showAlert", true);
-        modelAndView.addObject("cruiseList", cruiseList);
         return modelAndView;
     }
 
@@ -137,6 +113,7 @@ public class CruiseController {
         modelAndView.addObject("cruiseList", cruiseList);
         return modelAndView;
     }
+
     @GetMapping("/getAllCruiseList") //For users
     public ModelAndView getAllCruiseList() {
         List<CruiseModel> cruiseList = cruiseServiceInterface.getCruiseList();
@@ -145,7 +122,40 @@ public class CruiseController {
         modelAndView.addObject("searchResults", cruiseList);
         return modelAndView;
     }
+    @GetMapping("/fetchCruiseDataById")
+    public ModelAndView fetchCruise(@RequestParam String cruiseId){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("home");
+        try{
+        CruiseModel cd=cruiseServiceInterface.findCruiseById(cruiseId);
+        modelAndView.addObject("cruiseList",cd);
+    }
+        catch (Exception e){
+            modelAndView.addObject("message", "No Cruise with the given Id");
+            modelAndView.addObject("showAlert", true);
+        }
+        return modelAndView;
+    }
 
+
+    @PostMapping("/addCruise")
+    public ModelAndView addCruise(@ModelAttribute CruiseModel cruiseModel) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("home");
+        try {
+            CruiseModel cruiseModel1 = cruiseServiceInterface.findCruiseById(cruiseModel.getCruiseId());
+            modelAndView.addObject("message", "CruiseId already exists");
+            }
+        catch (Exception e){
+            cruiseServiceInterface.createCruiseInfo(cruiseModel);
+            List<CruiseModel> cruiseList = cruiseServiceInterface.getCruiseList();
+            modelAndView.addObject("message", "Added Successfully");
+            modelAndView.addObject("cruiseList", cruiseList);
+
+        }
+        modelAndView.addObject("showAlert", true);
+        return modelAndView;
+    }
 
     @PutMapping("/updateCruise")
     public ModelAndView updateCruiseData(@ModelAttribute CruiseModel cruiseModel)
@@ -156,7 +166,6 @@ public class CruiseController {
         modelAndView.setViewName("home");
         return modelAndView;
    }
-
 
     @GetMapping("/searchAll")
     public ModelAndView detailsofShip(){
@@ -171,17 +180,31 @@ public class CruiseController {
         return modelAndView;
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search") //Searching based on source, destination and price range
     public ModelAndView detailsofShip(@RequestParam String source,@RequestParam String destination,@RequestParam double startPrice,@RequestParam double endPrice){
-        List<CruiseModel> searchResults = cruiseServiceInterface.searchCruises(source, destination,startPrice,endPrice);
-        System.out.println(searchResults);
-        // Create a ModelAndView and add the search results to it
+//        List<CruiseModel> searchResults = cruiseServiceInterface.searchCruises(source, destination,startPrice,endPrice);
+//        System.out.println(searchResults);
+//        // Create a ModelAndView and add the search results to it
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("userHome");
+//        System.out.println(user.getName());
+//        modelAndView.addObject("searchResults", searchResults);
+//        modelAndView.addObject("userInfo",user);
+//        modelAndView.addObject("bookingModel", new BookingModel());
+//        return modelAndView;
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("userHome");
-        System.out.println(user.getName());
-        modelAndView.addObject("searchResults", searchResults);
-        modelAndView.addObject("userInfo",user);
-        modelAndView.addObject("bookingModel", new BookingModel());
+            List<CruiseModel> searchResults = cruiseServiceInterface.searchCruises(source, destination, startPrice, endPrice);
+            if (searchResults.isEmpty()) {
+                modelAndView.addObject("message", "No results found."); // Customize error message
+                modelAndView.addObject("showAlert",true);
+
+            }else {
+                modelAndView.addObject("searchResults", searchResults);
+                modelAndView.addObject("userInfo", user);
+                modelAndView.addObject("bookingModel", new BookingModel());
+        }
+
         return modelAndView;
     }
 
@@ -211,8 +234,6 @@ public class CruiseController {
         return modelAndView;
     }
 
-
-
 //    @PostMapping("/bookCruise")
 //    public ModelAndView bookCruise(@ModelAttribute BookingModel bookingModel) {
 //        System.out.println(bookingModel.getNumberOfSeats()); //Print number of seats requested
@@ -240,11 +261,10 @@ public class CruiseController {
 //        return modelAndView;
 //    }
 
-    @PostMapping("/bookCruise")
+    @PostMapping("/bookCruise") //caculations to book cruise with some conditions.
     public ModelAndView bookCruise(@ModelAttribute BookingModel bookingModel) {
         int requestedSeats = bookingModel.getNumberOfSeats();
         CruiseModel cruise = cruiseServiceInterface.findCruiseById(bookingModel.getBookingCruise());
-
         if (cruise == null) {
             // Handle the case where the cruise is not found
             ModelAndView modelAndView = new ModelAndView("userHome");
@@ -252,7 +272,6 @@ public class CruiseController {
             modelAndView.addObject("showAlert", true);
             return modelAndView;
         }
-
         int availableSeats = cruise.getAvailableSeats();
         if (availableSeats < requestedSeats) {
             // Not enough available seats
