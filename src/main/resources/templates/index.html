@@ -1,52 +1,206 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>CruiseFunBooking</title>-->
+<!--</head>-->
+
+<!--<body>-->
+
+<!--<div id="logindiv">-->
+<!--<form id="loginForm" action="/login" method="post" >-->
+<!--    <label for="userPhone">Phone no :</label>-->
+<!--    <input type="text" id="userPhone" name="userPhone" placeholder="Enter your Phone number" required><br><br>-->
+
+<!--    <label for="userPassword">Password:</label>-->
+<!--    <input type="password" id="userPassword" name="userPassword" placeholder="Enter your password"/><br><br>-->
+
+<!--    <button type="submit">LOGIN</button><br><br>-->
+<!--</form>-->
+<!--</div>-->
+
+<!--<button onclick="register()">REGISTER</button><br><br>-->
+
+<!--<div id="registerForm" style="display:none">-->
+<!--<form id="userForm" action="/userRegister" method="post" >-->
+<!--    <label for="name">Name :</label>-->
+<!--    <input type="text" id="name" name="name" placeholder="Enter your name" required><br><br>-->
+
+<!--    <label for="userName">Username:</label>-->
+<!--    <input type="text" id="userName" name="userName" placeholder="Enter your userName" required><br><br>-->
+
+<!--    <label for="userGender">Gender:</label>-->
+<!--    <select id="userGender" name="userGender" required>-->
+<!--        <option value="male">Male</option>-->
+<!--        <option value="female">Female</option>-->
+<!--        <option value="other">Other</option>-->
+<!--    </select><br><br>-->
+
+<!--    <label for="userEmail">Email:</label>-->
+<!--    <input type="email" id="userEmail" name="userEmail" placeholder="Enter your email" required><br><br>-->
+
+<!--    <label for="userRPassword">Password:</label>-->
+<!--    <input type="password" id="userRPassword" name="userPassword" placeholder="Enter your password"/><br><br>-->
+
+<!--    <label for="userRPhone">Contact:</label>-->
+<!--    <input type="text" id="userRPhone" name="userPhone" placeholder="Enter your Mobile Number" required maxlength="10"><br><br>-->
+
+<!--    <button type="submit">Submit</button><br><br>-->
+<!--</form>-->
+<!--</div>-->
+
+<!--<script th:inline="javascript">-->
+<!--    /*<![CDATA[*/-->
+<!--        var showAlert = /*[[${showAlert}]]*/ false;-->
+<!--        var errorMessage = /*[[${errorMessage}]]*/ "";-->
+
+<!--        if (showAlert) {-->
+<!--            alert(errorMessage);-->
+<!--        }-->
+<!--    /*]]>*/-->
+<!--</script>-->
+
+<!--<script>-->
+<!--    function register(){-->
+<!--        document.getElementById("logindiv").style.display = "none";-->
+<!--       document.getElementById("registerForm").style.display = "block";-->
+<!--   }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>CruiseFunBooking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('/cruise.jpg');
+            margin: 0;
+            padding: 0;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        #heading{
+                color: #cf1067;
+    text-align: center;
+    font-family: cursive;
+    font-size: 50px;
+        }
+
+        #logindiv, #registerForm {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        #registerButton{
+           background-color: #007bff;
+           width: 300px;
+           height: 40px;
+           position: absolute;
+           left: 50%;
+           transform: translate(-50%);
+           border:none;
+           border-radius:10px;
+           color:white;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #registerForm {
+            display: none;
+        }
+
+        #registerForm button[type="submit"] {
+            background-color: #28a745;
+        }
+
+        #registerForm button[type="submit"]:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 
 <body>
 
+<h1 id="heading">Cruise Fun Booking</h1>
 <div id="logindiv">
-<form id="loginForm" action="/login" method="post" >
-    <label for="userPhone">Phone no :</label>
-    <input type="text" id="userPhone" name="userPhone" placeholder="Enter your Phone number" required><br><br>
+    <form id="loginForm" action="/login" method="post">
+        <label for="userPhone">Phone no :</label>
+        <input type="text" id="userPhone" name="userPhone" placeholder="Enter your Phone number" required><br><br>
 
-    <label for="userPassword">Password:</label>
-    <input type="password" id="userPassword" name="userPassword" placeholder="Enter your password"/><br><br>
+        <label for="userPassword">Password:</label>
+        <input type="password" id="userPassword" name="userPassword" placeholder="Enter your password"/><br><br>
 
-    <button type="submit">LOGIN</button><br><br>
-</form>
+        <button type="submit">LOGIN</button><br><br>
+    </form>
 </div>
 
-<button onclick="register()">REGISTER</button><br><br>
+<button id="registerButton" onclick="register()">REGISTER</button><br><br>
 
-<div id="registerForm" style="display:none">
-<form id="userForm" action="/userRegister" method="post" >
-    <label for="name">Name :</label>
-    <input type="text" id="name" name="name" placeholder="Enter your name" required><br><br>
+<div id="registerForm">
+    <form id="userForm" action="/userRegister" method="post">
+        <label for="name">Name :</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required><br><br>
 
-    <label for="userName">Username:</label>
-    <input type="text" id="userName" name="userName" placeholder="Enter your userName" required><br><br>
+        <label for="userName">Username:</label>
+        <input type="text" id="userName" name="userName" placeholder="Enter your userName" required><br><br>
 
-    <label for="userGender">Gender:</label>
-    <select id="userGender" name="userGender" required>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-    </select><br><br>
+        <label for="userGender">Gender:</label>
+        <select id="userGender" name="userGender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+        </select><br><br>
 
-    <label for="userEmail">Email:</label>
-    <input type="email" id="userEmail" name="userEmail" placeholder="Enter your email" required><br><br>
+        <label for="userEmail">Email:</label>
+        <input type="email" id="userEmail" name="userEmail" placeholder="Enter your email" required><br><br>
 
-    <label for="userRPassword">Password:</label>
-    <input type="password" id="userRPassword" name="userPassword" placeholder="Enter your password"/><br><br>
+        <label for="userRPassword">Password:</label>
+        <input type="password" id="userRPassword" name="userPassword" placeholder="Enter your password"/><br><br>
 
-    <label for="userRPhone">Contact:</label>
-    <input type="text" id="userRPhone" name="userPhone" placeholder="Enter your Mobile Number" required maxlength="10"><br><br>
+        <label for="userRPhone">Contact:</label>
+        <input type="text" id="userRPhone" name="userPhone" placeholder="Enter your Mobile Number" required maxlength="10"><br><br>
 
-    <button type="submit">Submit</button><br><br>
-</form>
+        <button type="submit">Submit</button><br><br>
+    </form>
 </div>
 
 <script th:inline="javascript">
@@ -63,8 +217,11 @@
 <script>
     function register(){
         document.getElementById("logindiv").style.display = "none";
-       document.getElementById("registerForm").style.display = "block";
-   }
+         document.getElementById("heading").style.display = "none";
+        document.getElementById("registerButton").style.display = "none";
+        document.getElementById("registerForm").style.display = "block";
+
+    }
 </script>
 
 </body>

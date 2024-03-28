@@ -3,15 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <title>User Registration</title>
+    <style>
+
+        body {
+    font-family: Arial, sans-serif;
+    background-image: url(/water.jpg);
+    backdrop-filter: blur(5px);
+    margin: 0;
+    padding: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment:fixed;
+}
+
+
+
+h1 {
+    text-align: center;
+    color:wheat;
+    font-family:math;
+    margin-top: 0px;
+    padding: 20px;
+}
+
+li{
+    color:white;
+}
+
+#buttons button {
+    background-color: #48cdd2;
+    color: #fff;
+
+}
+
+button{
+    margin: 10px auto;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight:600
+}
+
+
+<!--button:hover {-->
+<!--    background-color: #0056b3;-->
+<!--}-->
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#booksDiv ul,
+ #searchResultDiv ul{
+ list-style-type: none;
+   padding: 0px 60px 0px 60px;
+}
+
+#booksDiv ul li,
+ #searchResultDiv ul li{
+    border: 2px solid #8db9bb;
+    border-radius: 10px;
+    padding: 20px 40px 20px 40px;
+    margin-bottom: 10px;
+}
+
+#booksDiv ul li button{
+    background-color: red;
+    color: #fff;
+     display: block;
+
+}
+
+#searchResultDiv ul li button{
+background-color: #02e6a1;
+    color: #fff;
+     display: block;
+        }
+    </style>
 </head>
 <body onload="checkPageLoad()">
 <h1>This is a page for User</h1>
-
+<div id="buttons" style="display:flex">
+    <button onclick="allCruise()">All cruise</button>
+    <button onclick="result1()">Search the source and destination</button>
+    <button onclick="bookings()">My Bookings</button>
+</div>
 <!--<button onclick="result1()">Search by source and destination</button>-->
 <!--<button onclick="result2()">Search by price</button>-->
-<button onclick="allCruise()">All cruise</button>
-<button onclick="result1()">Search the source and destination</button>
-<button onclick="bookings()">My Bookings</button>
+
 
 
 
@@ -29,13 +128,13 @@
 
 <div id="sdSearchDiv" style="display:none">
     <form id="search" action="/search" method="get">
-        <label for="source">Source :</label>
+        <label for="source" style="color:white">Source :</label>
         <input type="text" id="source" name="source" placeholder="Enter your source " required><br><br>
-        <label for="destination">Destination : </label>
+        <label for="destination" style="color:white">Destination : </label>
         <input type="text" id="destination" name="destination" placeholder="Enter your destination " required/><br><br>
-        <label for="startPrice">Start Price :</label>
+        <label for="startPrice" style="color:white">Start Price :</label>
         <input type="text" id="startPrice" name="startPrice" placeholder="Enter your start price range" required><br><br>
-        <label for="endPrice">End Price : </label>
+        <label for="endPrice" style="color:white">End Price : </label>
         <input type="text" id="endPrice" name="endPrice" placeholder="Enter your end price range" required/><br><br>
         <button type="submit">SEARCH</button><br><br>
 
@@ -53,48 +152,81 @@
 <!--    </form>-->
 <!--</div>-->
 
-<br>
-<br>
+
 
 <div id="booksDiv" style="display:block">
 <!--        <p>Bookings :</p>-->
-    <h3 id="bookingsHeading" style="display: none">Bookings : </h3>
+    <h3 id="bookingsHeading" style="display: none; color:white;padding-left: 20px;">Bookings : </h3>
     <ul>
 <!--        <li th:each="result : ${combinedProject}" th:text="${result} + '\n'"></li>-->
-        <li th:each="result : ${combinedProject}">
+        <li th:each="result : ${combinedProject}" style="position: relative;">
 
-            <p><strong>Booking ID:</strong> <span th:text="${result.bookingModel.bookingId}"></span></p>
-            <p><strong>User Phone:</strong> <span th:text="${result.userModel.userPhone}"></span></p>
-            <p><strong>Cruise Name:</strong> <span th:text="${result.cruiseModel.cruiseName}"></span></p>
-            <p><strong>Ship Name:</strong> <span th:text="${result.cruiseModel.shipName}"></span></p>
-            <p><strong>Source-Destination:</strong> <span th:text="${result.cruiseModel.source+ '-' +result.cruiseModel.destination}"></span></p>
-            <p><strong>Price:</strong> <span th:text="${result.cruiseModel.price}"></span></p>
+            <div style="display:flex;height: 35px">
+                <p><strong>Booking ID:</strong> <span th:text="${result.bookingModel.bookingId}"></span><p>
+                <p style=" position:absolute;margin-left: 50%;"><strong>User Phone:</strong> <span th:text="${result.userModel.userPhone}"></span></p></div>
+            <div style="display:flex;height: 35px">
+                <p><strong>Cruise Name:</strong> <span th:text="${result.cruiseModel.cruiseName}"></span><p>
+                <p style=" position:absolute;margin-left: 50%;"><strong>Ship Name:</strong> <span th:text="${result.cruiseModel.shipName}"></span></p></div>
+            <div style="display:flex;height: 35px">
+                <p><strong>Source-Destination:</strong> <span th:text="${result.cruiseModel.source+ '-' +result.cruiseModel.destination}"></span><p>
+                <p style=" position:absolute;margin-left: 50%;"><strong>Price:</strong> <span th:text="${result.cruiseModel.price}"></span></p></div>
             <p><strong>Total_seats_Booked:</strong> <span th:text="${result.bookingModel.numberOfSeats}"></span></p>
 <!--            <button th:attr="onclick='cancelBooking(\'' + ${result.bookingModel.bookingId} + '\')'">Cancel</button>-->
-            <button th:attr="onclick='cancelBooking(\'' + ${result.bookingModel.bookingId} + '\', \'' + ${result.bookingModel.numberOfSeats} + '\')'">Cancel</button>
-            <hr>
+            <div style="display:relative;"><button th:attr="onclick='cancelBooking(\'' + ${result.bookingModel.bookingId} + '\', \'' + ${result.bookingModel.numberOfSeats} + '\')'">Cancel</button></div>
+
+
         </li>
+
     </ul>
 
 </div>
 
 
+
+<!--<div id="searchResultDiv">-->
+<!--    <ul th:each="cruise : ${searchResults}">-->
+<!--        <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}+ ', Total seats: ' + ${cruise.totalSeats} + ', Available seats: ' + ${cruise.availableSeats}"></li>-->
+<!--&lt;!&ndash;        <p th:text="'User: ' + ${userInfo.userName}"></p>&ndash;&gt;-->
+<!--        <form name="saveBooking" th:action="@{/bookSeats}" method="post">-->
+<!--                        <input type="hidden" name="userPhone" th:value="${userInfo.userPhone}">-->
+<!--                        <input type="hidden" name="cruiseId" th:value="${cruise.cruiseId}">-->
+<!--                        <button type="submit" style="color:red">BOOK</button>-->
+<!--        </form>-->
+<!--        <hr>-->
+<!--    </ul>-->
+<!--</div>-->
 
 <div id="searchResultDiv">
-    <ul th:each="cruise : ${searchResults}">
-        <li th:text="'Id :'+ ${cruise.cruiseId}+', Cruise Name : ' + ${cruise.cruiseName}+', Ship Name :'+ ${cruise.shipName}+', Source :'+ ${cruise.source}+', Destination : '+${cruise.destination}+', Price :'+ ${cruise.price}+ ', Total seats: ' + ${cruise.totalSeats} + ', Available seats: ' + ${cruise.availableSeats}"></li>
-<!--        <p th:text="'User: ' + ${userInfo.userName}"></p>-->
+    <ul th:each="cruise : ${searchResults}" style="position: relative;">
+        <li style="position: relative;">
+            <div style="display:flex;height: 35px">
+                <p><strong>Id:</strong> <span th:text="${cruise.cruiseId}"></span><p>
+                <p style="position:absolute;margin-left:50%;"><strong>Cruise Name:</strong> <span th:text="${cruise.cruiseName}"></span></p>
+            </div>
+            <div style="display:flex;height:35px">
+                <p><strong>Ship Name:</strong> <span th:text="${cruise.shipName}"></span><p>
+                <p style="position:absolute;margin-left:50%;"><strong>Source:</strong> <span th:text="${cruise.source}"></span></p>
+            </div>
+            <div style="display:flex;height:35px">
+                <p><strong>Destination:</strong> <span th:text="${cruise.destination}"></span><p>
+                <p style="position:absolute;margin-left:50%;"><strong>Price:</strong> <span th:text="${cruise.price}"></span></p>
+            </div>
+            <div style="display:flex;height:35px">
+                <p><strong>Total Seats:</strong> <span th:text="${cruise.totalSeats}"></span><p>
+                <p style="position:absolute;margin-left: 50%;"><strong>Available Seats:</strong> <span th:text="${cruise.availableSeats}"></span></p>
+            </div><br>
+            <form name="saveBooking" th:action="@{/bookSeats}" method="post">
+                <input type="hidden" name="userPhone" th:value="${userInfo.userPhone}">
+                <input type="hidden" name="cruiseId" th:value="${cruise.cruiseId}">
 
+                <button type="submit">BOOK</button>
+            </form>
 
-        <form name="saveBooking" th:action="@{/bookSeats}" method="post">
-                        <input type="hidden" name="userPhone" th:value="${userInfo.userPhone}">
-                        <input type="hidden" name="cruiseId" th:value="${cruise.cruiseId}">
-                        <button type="submit" style="color:red">BOOK</button>
-        </form>
-
-        <hr>
+        </li>
     </ul>
 </div>
+
+
 
 <script th:inline="javascript">
     /*<![CDATA[*/

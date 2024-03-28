@@ -151,7 +151,6 @@ public class CruiseController {
             List<CruiseModel> cruiseList = cruiseServiceInterface.getCruiseList();
             modelAndView.addObject("message", "Added Successfully");
             modelAndView.addObject("cruiseList", cruiseList);
-
         }
         modelAndView.addObject("showAlert", true);
         return modelAndView;
